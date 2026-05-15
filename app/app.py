@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-import uvicorn
+from mangum import Mangum  # <-- Added this import
 
 app = FastAPI()
 
@@ -91,5 +91,10 @@ async def predict_failure_risk(data: StudentData):
         "action_required": probability > 50
     }
 
+# Wrap the FastAPI app with Mangum for serverless execution
+handler = Mangum(app)
+
+# Kept for local development testing only (Run via: python api/index.py)
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import uvicorn
+    uvicorn.run("index:app", host="0.0.0.0", port=8000, reload=True)
