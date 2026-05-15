@@ -1,424 +1,113 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مسار | Masar AI Platform</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { tajawal: ['Tajawal', 'sans-serif'] },
-          colors: {
-            navy: { 950:'#050e1f', 900:'#0A1628', 800:'#0f2040', 700:'#162d5a', 600:'#1e3f7a' },
-            brand: { 400:'#3b96f5', 500:'#1e7de0', 600:'#155fba' },
-            gold: { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' },
-            emerald2: { 400:'#34d399', 500:'#10b981', 600:'#059669' },
-            risk: { low:'#10b981', medium:'#f59e0b', high:'#ef4444' }
-          }
-        }
-      }
-    };
-  </script>
-
-  <style>
-    *, body { font-family: 'Tajawal', sans-serif; }
-    :root {
-      --navy-900: #0A1628;
-      --navy-800: #0f2040;
-      --brand-500: #1e7de0;
-      --gold-500: #f59e0b;
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9px; }
-
-    .sidebar { background: linear-gradient(175deg, #0A1628 0%, #0f2040 60%, #0e2952 100%); position: relative; }
-    .sidebar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(30,125,224,.25) 0%, transparent 70%); pointer-events: none; }
-
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 10px; color: #94a3b8; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all .2s ease; margin: 2px 0; }
-    .nav-item:hover { background: rgba(30,125,224,.15); color: #e2e8f0; }
-    .nav-item.active { background: rgba(30,125,224,.22); color: #fff; border-right: 4px solid var(--brand-500); }
-    .nav-item .nav-icon { font-size: 1.2rem; width: 24px; text-align: center; }
-
-    .stat-card { background: #fff; border-radius: 16px; padding: 20px 22px; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05); transition: transform .2s, box-shadow .2s; position: relative; overflow: hidden; }
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
-    .stat-card .accent-bar { position: absolute; top: 0; right: 0; width: 4px; height: 100%; border-radius: 0 16px 16px 0; }
-
-    .glass-card { background: rgba(255,255,255,.88); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.6); border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
-    .field { width:100%; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 14px; font-size:.9rem; transition:border-color .2s, box-shadow .2s; outline:none; background: #f8fafc; }
-    .field:focus { border-color: var(--brand-500); box-shadow: 0 0 0 3px rgba(30,125,224,.12); background: #fff; }
-
-    .btn-primary { background: linear-gradient(135deg, #1e7de0, #155fba); color:#fff; border-radius:10px; padding:10px 22px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .2s; border:none; box-shadow: 0 4px 14px rgba(30,125,224,.35); }
-    .btn-primary:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(30,125,224,.45); }
-    .btn-secondary { background:#f8fafc; color:#374151; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 22px; font-weight:600; font-size:.9rem; cursor:pointer; transition:all .2s; }
-    .btn-secondary:hover { background:#f1f5f9; border-color:#cbd5e1; }
-
-    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
-    .fade-up { animation: fadeUp .45s ease both; }
-    .section-title { font-size:1.25rem; font-weight:800; color:#0f172a; }
-
-    /* Auth Overlay */
-    #auth-overlay { position: fixed; inset: 0; background: rgba(10, 22, 40, 0.95); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+<div id="quiz-section" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-6 hidden">
+    <h3 class="text-xl font-bold text-navy-900 mb-4">اختبار قياس المستوى (الشبكات والبحوث)</h3>
+    <p class="text-slate-500 text-sm mb-4">الاختبار الأول من أصل 3 اختبارات.</p>
     
-    /* Chat Bot Widget */
-    #chatbot-widget { position: fixed; bottom: 20px; left: 20px; z-index: 50; }
-    #chatbot-window { width: 320px; height: 400px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; transition: all 0.3s ease; }
-    #chatbot-messages { flex: 1; overflow-y: auto; padding: 15px; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
-    .msg-bot { background: #e0f2fe; color: #0369a1; padding: 10px 14px; border-radius: 14px 14px 2px 14px; align-self: flex-start; max-width: 85%; font-size: 0.85rem; line-height: 1.5; }
-    .msg-user { background: var(--brand-500); color: #fff; padding: 10px 14px; border-radius: 14px 14px 14px 2px; align-self: flex-end; max-width: 85%; font-size: 0.85rem; }
-  </style>
-</head>
-
-<body class="bg-slate-100 min-h-screen flex overflow-hidden" id="app">
-
-<div id="auth-overlay">
-  <div class="glass-card bg-white p-8 w-full max-w-md mx-4 fade-up">
-    <div class="text-center mb-6">
-      <div class="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-black text-2xl shadow-lg mb-3">م</div>
-      <h2 class="text-2xl font-bold text-navy-900">مرحباً بك في مسار</h2>
-      <p class="text-slate-500 text-sm mt-1">الرجاء تسجيل الدخول للمتابعة</p>
-    </div>
-    
-    <div class="space-y-4">
-      <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1">نوع الحساب</label>
-        <select id="reg-role" class="field cursor-pointer font-bold" onchange="toggleRegFields()">
-          <option value="student">👨‍🎓 طالب</option>
-          <option value="faculty">👨‍🏫 عضو هيئة التدريس</option>
-        </select>
-      </div>
-
-      <div id="reg-specialization-box">
-        <label class="block text-xs font-bold text-slate-600 mb-1">التخصص الأكاديمي</label>
-        <select id="reg-spec" class="field cursor-pointer">
-          <option value="cs">علوم الحاسب (Computer Science)</option>
-          <option value="is">نظم المعلومات (Information Systems)</option>
-          <option value="ce">هندسة الحاسب (Computer Engineering)</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1">الاسم الكامل</label>
-        <input type="text" id="reg-name" class="field" placeholder="مثال: أحمد عبدالله" />
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-reg-id">الرقم الجامعي</label>
-        <input type="number" id="reg-id" class="field" placeholder="ادخل الرقم" />
-      </div>
-
-      <button onclick="login()" class="btn-primary w-full mt-2 py-3 text-lg">دخول للمنصة</button>
-    </div>
-  </div>
-</div>
-
-<aside id="sidebar" class="sidebar w-72 flex flex-col h-screen shrink-0 overflow-y-auto">
-  <div class="px-6 pt-8 pb-6 border-b border-white/10">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-black text-lg shadow-lg">م</div>
-      <div>
-        <p class="text-white font-bold text-lg leading-none">مسار</p>
-        <p class="text-brand-400 text-xs mt-1 font-bold" id="user-display-role">طالب - علوم حاسب</p>
-      </div>
-    </div>
-  </div>
-
-  <nav class="flex-1 px-4 mt-6 space-y-1">
-    <div class="nav-item active" onclick="showView('overview')" id="nav-overview">
-      <span class="nav-icon">📊</span><span>لوحة التحكم</span>
-    </div>
-    
-    <div class="nav-item student-only" onclick="showView('analysis')" id="nav-analysis">
-      <span class="nav-icon">🧠</span><span>تحليلي الذكي</span>
-    </div>
-    <div class="nav-item student-only" onclick="showView('scenarios')" id="nav-scenarios">
-      <span class="nav-icon">🎯</span><span>اختبار المهارات والمواقف</span>
-    </div>
-
-    <div class="nav-item faculty-only hidden" onclick="showView('add-course')" id="nav-add-course">
-      <span class="nav-icon">📁</span><span>إضافة وبناء مقرر API</span>
-    </div>
-    <div class="nav-item faculty-only hidden" onclick="showView('record')" id="nav-record">
-      <span class="nav-icon">✏️</span><span>رصد النتائج</span>
-    </div>
-    <div class="nav-item faculty-only hidden" onclick="showView('all-students')" id="nav-all">
-      <span class="nav-icon">👥</span><span>متابعة أداء الطلاب</span>
-    </div>
-  </nav>
-
-  <div class="p-5">
-    <button onclick="logout()" class="w-full py-2 rounded-lg bg-red-500/10 text-red-400 font-bold hover:bg-red-500/20 transition text-sm">تسجيل خروج</button>
-  </div>
-</aside>
-
-<div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-  <header class="bg-white border-b border-slate-200 px-5 py-3.5 flex items-center justify-between shadow-sm shrink-0">
-    <div>
-      <h1 class="font-bold text-slate-800 text-lg leading-none" id="page-title">لوحة التحكم</h1>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="text-left hidden sm:block">
-        <p class="text-sm font-bold text-slate-700" id="top-user-name">ضيف</p>
-        <p class="text-xs text-slate-400" id="top-user-id">---</p>
-      </div>
-      <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">👤</div>
-    </div>
-  </header>
-
-  <main class="flex-1 overflow-y-auto p-5 md:p-8 space-y-6">
-
-    <div id="view-overview" class="view-section space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="stat-card fade-up">
-          <div class="accent-bar bg-brand-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1">المقررات المسجلة</p>
-          <p class="text-3xl font-black text-slate-800">2</p>
-          <p class="text-xs text-brand-500 mt-1 font-bold">علوم الحاسب</p>
-        </div>
-        <div class="stat-card fade-up" style="animation-delay: 0.1s">
-          <div class="accent-bar bg-emerald2-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1">نسبة الإنجاز</p>
-          <p class="text-3xl font-black text-slate-800">75%</p>
-          <p class="text-xs text-emerald-500 mt-1 font-bold">معدل جيد جداً</p>
-        </div>
-        <div class="stat-card fade-up" style="animation-delay: 0.2s">
-          <div class="accent-bar bg-gold-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1">المهارات المكتسبة</p>
-          <p class="text-3xl font-black text-slate-800">8</p>
-          <p class="text-xs text-slate-400 mt-1">جاهزية لسوق العمل</p>
-        </div>
-      </div>
-      
-      <div class="glass-card p-6 fade-up" style="animation-delay: 0.3s">
-        <p class="section-title mb-4">المقررات المرجعية الحالية (API)</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="border border-slate-200 p-4 rounded-xl bg-slate-50">
-            <h3 class="font-bold text-navy-800 text-lg">Computer Networking (CS301)</h3>
-            <p class="text-sm text-slate-500 mb-2">الفصل الثالث: Network Layer, IPv4/IPv6, Routing</p>
-            <div class="flex gap-2"><span class="px-2 py-1 bg-brand-500/10 text-brand-600 text-xs rounded font-bold">معتمد لـ مسار</span></div>
-          </div>
-          <div class="border border-slate-200 p-4 rounded-xl bg-slate-50">
-            <h3 class="font-bold text-navy-800 text-lg">Operations Research (CS302)</h3>
-            <p class="text-sm text-slate-500 mb-2">الفصل الثالث: Linear Programming & Duality</p>
-            <div class="flex gap-2"><span class="px-2 py-1 bg-brand-500/10 text-brand-600 text-xs rounded font-bold">معتمد لـ مسار</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="view-scenarios" class="view-section hidden space-y-5">
-      <div class="glass-card p-6 fade-up">
-        <h2 class="section-title mb-2">اختبار المهارات العملية (محاكاة)</h2>
-        <p class="text-sm text-slate-500 mb-6">هذه المواقف تم توليدها برمجياً (API) من مقرراتك المرجعية لاختبار فهمك العميق بدلاً من الحفظ.</p>
-
-        <div class="space-y-6">
-          <div class="bg-white border-2 border-brand-500/20 p-5 rounded-xl shadow-sm relative overflow-hidden">
-            <div class="absolute top-0 right-0 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">CS301 - شبكات</div>
-            <h3 class="font-bold text-navy-900 text-lg mt-2 mb-2">الموقف الأول: شبكات مختلطة</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              أنت مهندس شبكات في شركة تمتلك راوترات تعمل بنظام IPv4، ولكن تم تكليفك بنقل بيانات جديدة تعتمد على بروتوكول IPv6 بين فرعين للشركة. كيف ستتصرف لتمرير هذه البيانات دون ترقية الراوترات القديمة فوراً؟
-            </p>
-            <div class="space-y-2">
-              <button class="w-full text-right p-3 border rounded-lg hover:bg-brand-50 hover:border-brand-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة خاطئة! مسح ה-Checksum لا يحل مشكلة التوافق.')">أ) أقوم بمسح Checksum الخاص بـ IPv6 لتقليل العبء.</button>
-              <button class="w-full text-right p-3 border rounded-lg hover:bg-brand-50 hover:border-brand-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة صحيحة! (Tunneling) هي التقنية المذكورة في منهجك لنقل حزم IPv6 كـ Payload داخل IPv4.')">ب) أستخدم تقنية Tunneling لتغليف حزم IPv6 داخل IPv4.</button>
-              <button class="w-full text-right p-3 border rounded-lg hover:bg-brand-50 hover:border-brand-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة خاطئة!')">ج) أعتمد على بروتوكول ICMPv6 فقط.</button>
+    <form id="quiz-form" class="space-y-6">
+        <div class="border-r-4 border-brand-500 pr-4">
+            <h4 class="font-bold text-brand-600 mb-2">1. ما هي آلية Tunneling لربط IPv4 مع IPv6؟</h4>
+            <div class="space-y-2 text-sm">
+                <label class="flex items-center gap-2"><input type="radio" name="n3" value="a" class="accent-brand-500"> تغليف حزم IPv6 كبيانات داخل حزم IPv4</label>
+                <label class="flex items-center gap-2"><input type="radio" name="n3" value="b" class="accent-brand-500"> حذف حزم IPv4</label>
             </div>
-          </div>
-
-          <div class="bg-white border-2 border-gold-500/20 p-5 rounded-xl shadow-sm relative overflow-hidden">
-            <div class="absolute top-0 right-0 bg-gold-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">CS302 - بحوث عمليات</div>
-            <h3 class="font-bold text-navy-900 text-lg mt-2 mb-2">الموقف الثاني: تحسين التكلفة</h3>
-            <p class="text-slate-600 text-sm leading-relaxed mb-4">
-              لديك نموذج رياضي (Primal) يهدف إلى "تعظيم الأرباح" (Maximization) ولكنه يحتوي على قيود كثيرة ومعقدة. طلب منك المدير إيجاد تكلفة الموارد بدلاً من الأرباح باستخدام نظرية (Duality). ماذا ستفعل؟
-            </p>
-            <div class="space-y-2">
-              <button class="w-full text-right p-3 border rounded-lg hover:bg-gold-50 hover:border-gold-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة صحيحة! في منهجك: نموذج Max يتحول إلى Min، والقيود تعكس اتجاهها.')">أ) أحول الدالة إلى (Minimization) وأعكس اتجاه المتباينات (Constraints).</button>
-              <button class="w-full text-right p-3 border rounded-lg hover:bg-gold-50 hover:border-gold-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة خاطئة! المتغيرات لا تحذف بل تتحول.')">ب) أحذف المتغيرات السالبة من المعادلة.</button>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-
-    <div id="view-add-course" class="view-section hidden space-y-5">
-      <div class="glass-card p-6 fade-up max-w-2xl">
-        <h2 class="section-title mb-2">بناء مقرر API ذكي</h2>
-        <p class="text-sm text-slate-500 mb-6">قم برفع محتوى المقرر (PDF, Word) وسيقوم النظام بتحليله بالذكاء الاصطناعي وبناء مسارات وأسئلة تفاعلية للطلاب.</p>
+        <div class="border-r-4 border-gold-500 pr-4">
+            <h4 class="font-bold text-gold-600 mb-2">2. عند تحويل مسألة Primal بصيغة (Max) إلى Dual، ما هي صيغة دالة الهدف؟</h4>
+            <div class="space-y-2 text-sm">
+                <label class="flex items-center gap-2"><input type="radio" name="or1" value="a" class="accent-gold-500"> Max (تعظيم)</label>
+                <label class="flex items-center gap-2"><input type="radio" name="or1" value="b" class="accent-gold-500"> Min (تصغير)</label>
+            </div>
+        </div>
         
-        <div class="space-y-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">اسم المقرر</label>
-            <input type="text" class="field" placeholder="مثال: هندسة البرمجيات" />
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">رمز المقرر</label>
-              <input type="text" class="field" placeholder="SWE301" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-600 mb-1">تخصص المقرر</label>
-              <select class="field">
-                <option>علوم الحاسب</option>
-                <option>نظم المعلومات</option>
-                <option>عام</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">المادة العلمية (للتدريب الذكي)</label>
-            <div class="border-2 border-dashed border-brand-300 rounded-xl p-8 text-center bg-brand-50 cursor-pointer hover:bg-brand-100 transition">
-              <span class="text-3xl mb-2 block">📄</span>
-              <p class="text-sm font-bold text-brand-600">اضغط هنا لرفع المنهج المعتمد</p>
-              <p class="text-xs text-brand-400 mt-1">يدعم PDF, PPTX</p>
-            </div>
-          </div>
-          <button class="btn-primary w-full py-3 text-lg mt-4" onclick="alert('تم رفع المقرر للـ API بنجاح! يتم الآن استخراج المهارات والمواقف.')">بناء مسار المقرر 🚀</button>
-        </div>
-      </div>
-    </div>
+        <button type="button" onclick="submitQuiz()" class="bg-brand-500 hover:bg-brand-600 text-white font-bold py-2 px-6 rounded-lg transition">تسليم الاختبار وعرض التحليل الذكي</button>
+    </form>
 
-  </main>
+    <div id="quiz-result" class="mt-6 p-4 bg-emerald-50 text-emerald-800 rounded-lg hidden">
+        <h4 class="font-bold mb-2">نتيجتك وتحليلك الذكي:</h4>
+        <p id="result-score" class="text-xl font-black mb-2"></p>
+        <p class="text-sm font-bold">نسبة الإنجاز في المنهج المعتمد: <span id="result-completion" class="text-brand-600"></span></p>
+        <div class="mt-3">
+            <p class="font-bold text-sm">المهارات المكتسبة:</p>
+            <ul id="result-skills" class="list-disc list-inside text-sm mt-1"></ul>
+        </div>
+        <div class="mt-3 text-red-600">
+            <p class="font-bold text-sm">نقاط الضعف التي تحتاج مراجعة:</p>
+            <ul id="result-weaknesses" class="list-disc list-inside text-sm mt-1"></ul>
+        </div>
+    </div>
 </div>
 
-<div id="chatbot-widget">
-  <div id="chatbot-window">
-    <div class="bg-brand-600 text-white p-3 flex justify-between items-center font-bold">
-      <div class="flex items-center gap-2">
-        <span class="text-xl">🤖</span>
-        <span class="text-sm">بوت مسار التعليمي</span>
-      </div>
-      <button onclick="toggleChat()" class="text-white hover:text-slate-200">✖</button>
+<div id="faculty-section" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-6">
+    <h3 class="text-xl font-bold text-navy-900 mb-4">إدارة المقررات ورصد الدرجات (مجموعتي: 5 طلاب)</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 border border-slate-100 rounded-xl bg-slate-50">
+            <h4 class="font-bold text-slate-700 mb-3">رصد الدرجات اليدوي</h4>
+            <input type="text" placeholder="رقم الطالب" class="w-full mb-2 p-2 rounded border border-slate-200">
+            <input type="number" placeholder="الدرجة المكتسبة" class="w-full mb-2 p-2 rounded border border-slate-200">
+            <button class="w-full bg-navy-800 text-white py-2 rounded font-bold text-sm hover:bg-navy-700">حفظ الدرجة</button>
+        </div>
+        <div class="p-4 border border-slate-100 rounded-xl bg-brand-50">
+            <h4 class="font-bold text-brand-700 mb-3">إرفاق المنهج للـ API</h4>
+            <select class="w-full mb-2 p-2 rounded border border-brand-200 bg-white">
+                <option>شبكات الحاسب - هندسة حاسب</option>
+                <option>بحوث العمليات - علوم حاسب</option>
+            </select>
+            <input type="file" class="w-full mb-2 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-100 file:text-brand-700 hover:file:bg-brand-200">
+            <button class="w-full bg-brand-500 text-white py-2 rounded font-bold text-sm hover:bg-brand-600">رفع واعتماد للمسار التدريبي</button>
+        </div>
     </div>
-    
-    <div id="chatbot-messages">
-      <div class="msg-bot">مرحباً! أنا المساعد الذكي. كيف يمكنني مساعدتك في المنهج أو في تصفح المنصة؟</div>
-    </div>
+</div>
 
-    <div class="p-3 border-t border-slate-200 bg-white flex gap-2">
-      <input type="text" id="chat-input" class="flex-1 bg-slate-100 border-none rounded-lg px-3 text-sm outline-none focus:ring-2 ring-brand-400" placeholder="اسأل عن أي مفهوم..." onkeypress="if(event.key === 'Enter') sendChat()" />
-      <button onclick="sendChat()" class="bg-brand-500 text-white w-10 h-10 rounded-lg flex items-center justify-center hover:bg-brand-600 transition">➤</button>
+<div class="fixed bottom-6 left-6 z-50">
+    <button onclick="toggleChat()" class="w-14 h-14 bg-brand-600 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+    </button>
+    <div id="chat-window" class="hidden absolute bottom-16 left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col">
+        <div class="bg-brand-600 p-4 text-white font-bold text-sm">البوت الإرشادي (مسار)</div>
+        <div id="chat-messages" class="p-4 h-64 overflow-y-auto bg-slate-50 text-sm space-y-3">
+            <div class="bg-white p-3 rounded-lg shadow-sm w-fit border border-slate-100">مرحباً! اختر سؤالاً أو اسألني:</div>
+            <div class="flex flex-wrap gap-2 mt-2">
+                <button onclick="askBot('أين يمكن ان اجد اختباري؟')" class="text-xs bg-brand-100 text-brand-700 px-2 py-1 rounded-full">أين اختباري؟</button>
+                <button onclick="askBot('ماهو Dule?')" class="text-xs bg-brand-100 text-brand-700 px-2 py-1 rounded-full">ما هو Duality؟</button>
+                <button onclick="askBot('كيف أرصد درجات طلابي؟')" class="text-xs bg-brand-100 text-brand-700 px-2 py-1 rounded-full">كيف أرصد الدرجات؟</button>
+            </div>
+        </div>
     </div>
-  </div>
-  
-  <button id="chatbot-toggle" onclick="toggleChat()" class="w-14 h-14 bg-gradient-to-br from-brand-500 to-brand-700 rounded-full text-white text-2xl shadow-xl flex items-center justify-center hover:scale-105 transition transform">
-    💬
-  </button>
 </div>
 
 <script>
-  let currentUser = {
-    name: '',
-    id: '',
-    role: 'student', // 'student' or 'faculty'
-    spec: 'cs'
-  };
+// سكربت إرسال الاختبار
+function submitQuiz() {
+    // في بيئة العمل الحقيقية، نرسل هذا للـ API عبر Fetch
+    // نحاكي الرد هنا لعرض التصميم
+    document.getElementById('quiz-result').classList.remove('hidden');
+    document.getElementById('result-score').innerText = "الدرجة: 8 / 10";
+    document.getElementById('result-completion').innerText = "33.3% (اكتمل الاختبار 1 من 3)";
+    document.getElementById('result-skills').innerHTML = "<li>فهم Transition Mechanisms (Tunneling)</li><li>تحليل القيود Constraint Mapping</li>";
+    document.getElementById('result-weaknesses').innerHTML = "<li>Duality Principle (تحتاج مراجعة محاضرة د.سارة)</li>";
+}
 
-  function toggleRegFields() {
-    const role = document.getElementById('reg-role').value;
-    document.getElementById('lbl-reg-id').innerText = role === 'student' ? 'الرقم الجامعي' : 'الرقم الوظيفي';
-  }
+// سكربت البوت
+function toggleChat() {
+    const chat = document.getElementById('chat-window');
+    chat.classList.toggle('hidden');
+}
 
-  function login() {
-    const name = document.getElementById('reg-name').value;
-    const id = document.getElementById('reg-id').value;
+async function askBot(question) {
+    const msgs = document.getElementById('chat-messages');
+    msgs.innerHTML += `<div class="bg-brand-500 text-white p-3 rounded-lg shadow-sm w-fit mr-auto mt-2">${question}</div>`;
     
-    if(!name || !id) return alert('الرجاء إدخال الاسم والرقم');
-
-    currentUser.role = document.getElementById('reg-role').value;
-    currentUser.spec = document.getElementById('reg-spec').value;
-    currentUser.name = name;
-    currentUser.id = id;
-
-    // Update UI Elements
-    document.getElementById('top-user-name').innerText = name;
-    document.getElementById('top-user-id').innerText = '#' + id;
-    
-    let roleText = currentUser.role === 'student' ? 'طالب' : 'عضو هيئة تدريس';
-    let specText = document.getElementById('reg-spec').options[document.getElementById('reg-spec').selectedIndex].text;
-    document.getElementById('user-display-role').innerText = roleText + ' - ' + specText;
-
-    // Apply Permissions
-    document.querySelectorAll('.student-only').forEach(el => el.classList.toggle('hidden', currentUser.role !== 'student'));
-    document.querySelectorAll('.faculty-only').forEach(el => el.classList.toggle('hidden', currentUser.role !== 'faculty'));
-
-    // Hide Overlay
-    document.getElementById('auth-overlay').style.display = 'none';
-    showView('overview');
-  }
-
-  function showView(viewId) {
-    document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    
-    let target = document.getElementById('view-' + viewId);
-    if(target) target.classList.remove('hidden');
-    
-    let nav = document.getElementById('nav-' + viewId);
-    if(nav) nav.classList.add('active');
-
-    const titles = {
-      'overview': 'لوحة التحكم',
-      'scenarios': 'اختبار المهارات',
-      'analysis': 'تحليلي الذكي',
-      'add-course': 'بناء مقرر API',
-      'record': 'رصد النتائج',
-      'all-students': 'متابعة أداء الطلاب'
-    };
-    document.getElementById('page-title').innerText = titles[viewId] || '';
-  }
-
-  function logout() {
-    document.getElementById('auth-overlay').style.display = 'flex';
-    document.getElementById('reg-name').value = '';
-    document.getElementById('reg-id').value = '';
-  }
-
-  // ChatBot Logic
-  let chatOpen = false;
-  function toggleChat() {
-    chatOpen = !chatOpen;
-    document.getElementById('chatbot-window').style.display = chatOpen ? 'flex' : 'none';
-    document.getElementById('chatbot-toggle').style.transform = chatOpen ? 'scale(0)' : 'scale(1)';
-  }
-
-  function sendChat() {
-    const input = document.getElementById('chat-input');
-    const text = input.value.trim();
-    if(!text) return;
-
-    const chatBox = document.getElementById('chatbot-messages');
-    
-    // User Message
-    chatBox.innerHTML += `<div class="msg-user">${text}</div>`;
-    input.value = '';
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    // Bot Thinking/Response Delay
-    setTimeout(() => {
-      let reply = "عذراً، لم أفهم سؤالك. يمكنك سؤالي عن مقرراتك أو عن كيفية التصفح.";
-      
-      // AI Logic based on PDFs
-      if(text.includes('تسجيل') || text.includes('خانة')) {
-        reply = "للتسجيل، استخدمت الشاشة الأولى لاختيار دورك كطالب أو عضو هيئة تدريس. يمكنك التنقل بين الخانات عبر القائمة الجانبية يميناً.";
-      } 
-      else if(text.toLowerCase().includes('ipv6') || text.includes('tunneling') || text.includes('شبكات')) {
-        reply = "من خلال مقرر CS301 المرجعي: تقنية (Tunneling) تستخدم لنقل حزم IPv6 كبيانات (Payload) داخل حزم IPv4 لتسهيل الانتقال بين الأنظمة.";
-      }
-      else if(text.toLowerCase().includes('dual') || text.includes('primal') || text.includes('بحوث')) {
-        reply = "بناءً على مقرر CS302 (Duality): إذا كان النموذج الأساسي (Primal) هو تعظيم (Max)، فإن النموذج المقابل (Dual) يكون تقليل (Min) مع عكس إشارات القيود (Constraints).";
-      }
-
-      chatBox.innerHTML += `<div class="msg-bot">${reply}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }, 800);
-  }
+    try {
+        const response = await fetch('/chatbot/ask', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({question: question})
+        });
+        const data = await response.json();
+        msgs.innerHTML += `<div class="bg-white border border-slate-100 p-3 rounded-lg shadow-sm w-fit mt-2">${data.answer}</div>`;
+        msgs.scrollTop = msgs.scrollHeight;
+    } catch(e) {
+        // Fallback for UI demo if server is not running
+        msgs.innerHTML += `<div class="bg-white border border-slate-100 p-3 rounded-lg shadow-sm w-fit mt-2">تمت محاكاة الرد: سيقوم الـ API بالرد عليك بمجرد تشغيله.</div>`;
+    }
+}
 </script>
-
-</body>
-</html>
