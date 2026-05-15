@@ -27,7 +27,6 @@
 
   <style>
     *, body { font-family: 'Tajawal', sans-serif; }
-
     :root {
       --navy-900: #0A1628;
       --navy-800: #0f2040;
@@ -35,1143 +34,391 @@
       --gold-500: #f59e0b;
     }
 
-    /* ─── Scrollbar ─── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9px; }
 
-    /* ─── Sidebar ─── */
-    .sidebar {
-      background: linear-gradient(175deg, #0A1628 0%, #0f2040 60%, #0e2952 100%);
-      position: relative;
-    }
-    .sidebar::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(30,125,224,.25) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    .sidebar { background: linear-gradient(175deg, #0A1628 0%, #0f2040 60%, #0e2952 100%); position: relative; }
+    .sidebar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(30,125,224,.25) 0%, transparent 70%); pointer-events: none; }
 
-    /* ─── Sidebar nav items ─── */
-    .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 16px; border-radius: 10px;
-      color: #94a3b8; font-size: 0.95rem; font-weight: 500;
-      cursor: pointer; transition: all .2s ease;
-      margin: 2px 0;
-    }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 10px; color: #94a3b8; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all .2s ease; margin: 2px 0; }
     .nav-item:hover { background: rgba(30,125,224,.15); color: #e2e8f0; }
-    .nav-item.active { background: rgba(30,125,224,.22); color: #fff; }
+    .nav-item.active { background: rgba(30,125,224,.22); color: #fff; border-right: 4px solid var(--brand-500); }
     .nav-item .nav-icon { font-size: 1.2rem; width: 24px; text-align: center; }
 
-    /* ─── Cards ─── */
-    .stat-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px 22px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05);
-      transition: transform .2s, box-shadow .2s;
-      position: relative; overflow: hidden;
-    }
+    .stat-card { background: #fff; border-radius: 16px; padding: 20px 22px; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05); transition: transform .2s, box-shadow .2s; position: relative; overflow: hidden; }
     .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
-    .stat-card .accent-bar {
-      position: absolute; top: 0; right: 0; width: 4px; height: 100%; border-radius: 0 16px 16px 0;
-    }
+    .stat-card .accent-bar { position: absolute; top: 0; right: 0; width: 4px; height: 100%; border-radius: 0 16px 16px 0; }
 
-    .glass-card {
-      background: rgba(255,255,255,.88);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,.6);
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,.07);
-    }
+    .glass-card { background: rgba(255,255,255,.88); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.6); border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
+    .field { width:100%; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 14px; font-size:.9rem; transition:border-color .2s, box-shadow .2s; outline:none; background: #f8fafc; }
+    .field:focus { border-color: var(--brand-500); box-shadow: 0 0 0 3px rgba(30,125,224,.12); background: #fff; }
 
-    /* ─── Risk badge ─── */
-    .badge-low    { background:#d1fae5; color:#065f46; }
-    .badge-medium { background:#fef3c7; color:#92400e; }
-    .badge-high   { background:#fee2e2; color:#991b1b; }
-    .badge-none   { background:#f1f5f9; color:#64748b; }
-
-    /* ─── Progress bar ─── */
-    .progress-track { background:#f1f5f9; border-radius:9px; height:8px; overflow:hidden; }
-    .progress-fill  { height:100%; border-radius:9px; transition: width 1.1s cubic-bezier(.4,0,.2,1); }
-
-    /* ─── Tabs ─── */
-    .tab-btn { padding: 9px 20px; border-radius: 9px; font-size:.9rem; font-weight:600; cursor:pointer; transition:all .2s; color:#64748b; }
-    .tab-btn.active { background: var(--brand-500); color:#fff; box-shadow: 0 4px 14px rgba(30,125,224,.3); }
-
-    /* ─── Form inputs ─── */
-    .field {
-      width:100%; border:1.5px solid #e2e8f0; border-radius:10px;
-      padding:10px 14px; font-size:.9rem; font-family:'Tajawal',sans-serif;
-      transition:border-color .2s, box-shadow .2s; outline:none;
-    }
-    .field:focus { border-color: var(--brand-500); box-shadow: 0 0 0 3px rgba(30,125,224,.12); }
-
-    /* ─── Button ─── */
-    .btn-primary {
-      background: linear-gradient(135deg, #1e7de0, #155fba);
-      color:#fff; border-radius:10px; padding:10px 22px;
-      font-weight:700; font-size:.9rem; font-family:'Tajawal',sans-serif;
-      cursor:pointer; transition:all .2s; border:none;
-      box-shadow: 0 4px 14px rgba(30,125,224,.35);
-    }
+    .btn-primary { background: linear-gradient(135deg, #1e7de0, #155fba); color:#fff; border-radius:10px; padding:10px 22px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .2s; border:none; box-shadow: 0 4px 14px rgba(30,125,224,.35); }
     .btn-primary:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(30,125,224,.45); }
-    .btn-primary:active { transform:translateY(0); }
-    .btn-secondary {
-      background:#f8fafc; color:#374151; border:1.5px solid #e2e8f0;
-      border-radius:10px; padding:10px 22px; font-weight:600; font-size:.9rem;
-      font-family:'Tajawal',sans-serif; cursor:pointer; transition:all .2s;
-    }
+    .btn-secondary { background:#f8fafc; color:#374151; border:1.5px solid #e2e8f0; border-radius:10px; padding:10px 22px; font-weight:600; font-size:.9rem; cursor:pointer; transition:all .2s; }
     .btn-secondary:hover { background:#f1f5f9; border-color:#cbd5e1; }
 
-    /* ─── Student row ─── */
-    .student-row { background:#fff; border-radius:12px; padding:14px 18px; margin-bottom:8px;
-      box-shadow:0 1px 3px rgba(0,0,0,.05); transition:box-shadow .2s; }
-    .student-row:hover { box-shadow:0 4px 16px rgba(0,0,0,.09); }
-
-    /* ─── Animations ─── */
     @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes pulseRing { 0%,100%{box-shadow:0 0 0 0 rgba(30,125,224,.4)} 50%{box-shadow:0 0 0 8px rgba(30,125,224,0)} }
     .fade-up { animation: fadeUp .45s ease both; }
-    .fade-up-1 { animation: fadeUp .45s .06s ease both; }
-    .fade-up-2 { animation: fadeUp .45s .12s ease both; }
-    .fade-up-3 { animation: fadeUp .45s .18s ease both; }
-    .fade-up-4 { animation: fadeUp .45s .24s ease both; }
-
-    /* ─── Toast ─── */
-    #toast { transition: opacity .3s, transform .3s; }
-
-    /* ─── Mobile overlay ─── */
-    #mob-overlay { display:none; }
-    @media(max-width:1023px) {
-      #sidebar { transform: translateX(100%); transition:transform .28s ease; position:fixed; z-index:50; height:100vh; }
-      #sidebar.open { transform: translateX(0); }
-      #mob-overlay { display:block; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:40; opacity:0; pointer-events:none; transition:opacity .28s; }
-      #mob-overlay.open { opacity:1; pointer-events:auto; }
-    }
-
-    /* ─── Loading spinner ─── */
-    .spinner { border:3px solid #e2e8f0; border-top-color: var(--brand-500); border-radius:50%; width:28px; height:28px; animation:spin .7s linear infinite; margin:auto; }
-    @keyframes spin { to{transform:rotate(360deg)} }
-
-    /* ─── Risk ring ─── */
-    .risk-ring { width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-    .risk-ring.low    { background:conic-gradient(#10b981 calc(var(--pct)*1%),#f0fdf4 0); box-shadow:0 0 0 4px #fff, 0 0 0 6px #10b981; }
-    .risk-ring.medium { background:conic-gradient(#f59e0b calc(var(--pct)*1%),#fffbeb 0); box-shadow:0 0 0 4px #fff, 0 0 0 6px #f59e0b; }
-    .risk-ring.high   { background:conic-gradient(#ef4444 calc(var(--pct)*1%),#fef2f2 0); box-shadow:0 0 0 4px #fff, 0 0 0 6px #ef4444; }
-
-    /* ─── Section headings ─── */
     .section-title { font-size:1.25rem; font-weight:800; color:#0f172a; }
 
-    /* ─── Chart wrapper ─── */
-    .chart-wrap { position:relative; }
+    /* Auth Overlay */
+    #auth-overlay { position: fixed; inset: 0; background: rgba(10, 22, 40, 0.95); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+    
+    /* Chat Bot Widget */
+    #chatbot-widget { position: fixed; bottom: 20px; left: 20px; z-index: 50; }
+    #chatbot-window { width: 320px; height: 400px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; transition: all 0.3s ease; }
+    #chatbot-messages { flex: 1; overflow-y: auto; padding: 15px; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
+    .msg-bot { background: #e0f2fe; color: #0369a1; padding: 10px 14px; border-radius: 14px 14px 2px 14px; align-self: flex-start; max-width: 85%; font-size: 0.85rem; line-height: 1.5; }
+    .msg-user { background: var(--brand-500); color: #fff; padding: 10px 14px; border-radius: 14px 14px 14px 2px; align-self: flex-end; max-width: 85%; font-size: 0.85rem; }
   </style>
 </head>
 
-<body class="bg-slate-100 min-h-screen flex" id="app">
+<body class="bg-slate-100 min-h-screen flex overflow-hidden" id="app">
 
-<!-- ─── Mobile Overlay ─── -->
-<div id="mob-overlay" onclick="closeSidebar()"></div>
+<div id="auth-overlay">
+  <div class="glass-card bg-white p-8 w-full max-w-md mx-4 fade-up">
+    <div class="text-center mb-6">
+      <div class="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-black text-2xl shadow-lg mb-3">م</div>
+      <h2 class="text-2xl font-bold text-navy-900">مرحباً بك في مسار</h2>
+      <p class="text-slate-500 text-sm mt-1">الرجاء تسجيل الدخول للمتابعة</p>
+    </div>
+    
+    <div class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">نوع الحساب</label>
+        <select id="reg-role" class="field cursor-pointer font-bold" onchange="toggleRegFields()">
+          <option value="student">👨‍🎓 طالب</option>
+          <option value="faculty">👨‍🏫 عضو هيئة التدريس</option>
+        </select>
+      </div>
 
-<!-- ══════════════════════════════════════════
-     SIDEBAR
-══════════════════════════════════════════ -->
-<aside id="sidebar" class="sidebar w-72 flex flex-col min-h-screen shrink-0">
+      <div id="reg-specialization-box">
+        <label class="block text-xs font-bold text-slate-600 mb-1">التخصص الأكاديمي</label>
+        <select id="reg-spec" class="field cursor-pointer">
+          <option value="cs">علوم الحاسب (Computer Science)</option>
+          <option value="is">نظم المعلومات (Information Systems)</option>
+          <option value="ce">هندسة الحاسب (Computer Engineering)</option>
+        </select>
+      </div>
 
-  <!-- Logo -->
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1">الاسم الكامل</label>
+        <input type="text" id="reg-name" class="field" placeholder="مثال: أحمد عبدالله" />
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 mb-1" id="lbl-reg-id">الرقم الجامعي</label>
+        <input type="number" id="reg-id" class="field" placeholder="ادخل الرقم" />
+      </div>
+
+      <button onclick="login()" class="btn-primary w-full mt-2 py-3 text-lg">دخول للمنصة</button>
+    </div>
+  </div>
+</div>
+
+<aside id="sidebar" class="sidebar w-72 flex flex-col h-screen shrink-0 overflow-y-auto">
   <div class="px-6 pt-8 pb-6 border-b border-white/10">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-black text-lg shadow-lg">م</div>
       <div>
         <p class="text-white font-bold text-lg leading-none">مسار</p>
-        <p class="text-slate-400 text-xs mt-0.5">Masar AI Platform</p>
+        <p class="text-brand-400 text-xs mt-1 font-bold" id="user-display-role">طالب - علوم حاسب</p>
       </div>
     </div>
   </div>
 
-  <!-- Role Selector -->
-  <div class="px-5 mt-5">
-    <p class="text-xs text-slate-500 font-semibold uppercase mb-2 px-1" id="lbl-role-title">الدور الحالي</p>
-    <div class="flex gap-2">
-      <button onclick="setRole('student')" id="role-student" class="flex-1 py-2 rounded-lg text-sm font-bold transition-all bg-brand-500 text-white shadow">
-        🎓 <span id="lbl-student">طالب</span>
-      </button>
-      <button onclick="setRole('faculty')" id="role-faculty" class="flex-1 py-2 rounded-lg text-sm font-bold transition-all bg-white/10 text-slate-300">
-        🏛 <span id="lbl-faculty">أستاذ</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Nav -->
   <nav class="flex-1 px-4 mt-6 space-y-1">
     <div class="nav-item active" onclick="showView('overview')" id="nav-overview">
-      <span class="nav-icon">📊</span>
-      <span id="lbl-nav-overview">لوحة التحكم</span>
+      <span class="nav-icon">📊</span><span>لوحة التحكم</span>
     </div>
-    <div class="nav-item" onclick="showView('analysis')" id="nav-analysis">
-      <span class="nav-icon">🧠</span>
-      <span id="lbl-nav-analysis">التحليل الذكي</span>
+    
+    <div class="nav-item student-only" onclick="showView('analysis')" id="nav-analysis">
+      <span class="nav-icon">🧠</span><span>تحليلي الذكي</span>
     </div>
-    <div class="nav-item" onclick="showView('courses')" id="nav-courses">
-      <span class="nav-icon">📚</span>
-      <span id="lbl-nav-courses">المقررات</span>
+    <div class="nav-item student-only" onclick="showView('scenarios')" id="nav-scenarios">
+      <span class="nav-icon">🎯</span><span>اختبار المهارات والمواقف</span>
+    </div>
+
+    <div class="nav-item faculty-only hidden" onclick="showView('add-course')" id="nav-add-course">
+      <span class="nav-icon">📁</span><span>إضافة وبناء مقرر API</span>
     </div>
     <div class="nav-item faculty-only hidden" onclick="showView('record')" id="nav-record">
-      <span class="nav-icon">✏️</span>
-      <span id="lbl-nav-record">رصد النتائج</span>
+      <span class="nav-icon">✏️</span><span>رصد النتائج</span>
     </div>
     <div class="nav-item faculty-only hidden" onclick="showView('all-students')" id="nav-all">
-      <span class="nav-icon">👥</span>
-      <span id="lbl-nav-all">جميع الطلاب</span>
+      <span class="nav-icon">👥</span><span>متابعة أداء الطلاب</span>
     </div>
   </nav>
 
-  <!-- Bottom: API + Lang -->
-  <div class="px-5 pb-6 space-y-3 border-t border-white/10 pt-4 mt-4">
-    <div>
-      <p class="text-xs text-slate-500 mb-1" id="lbl-api-url">عنوان API</p>
-      <input id="api-base" class="w-full bg-white/10 text-slate-200 text-xs rounded-lg px-3 py-2 border border-white/10 outline-none focus:border-brand-400" value="http://localhost:8000" />
-    </div>
-    <div class="flex gap-2">
-      <button onclick="setLang('ar')" id="lang-ar" class="flex-1 text-xs py-1.5 rounded-lg bg-gold-500 text-navy-900 font-bold">العربية</button>
-      <button onclick="setLang('en')" id="lang-en" class="flex-1 text-xs py-1.5 rounded-lg bg-white/10 text-slate-400 font-bold">English</button>
-    </div>
-    <div id="api-status" class="flex items-center gap-2 text-xs text-slate-400">
-      <span id="status-dot" class="w-2 h-2 rounded-full bg-slate-500 inline-block"></span>
-      <span id="status-text">غير متصل</span>
-    </div>
+  <div class="p-5">
+    <button onclick="logout()" class="w-full py-2 rounded-lg bg-red-500/10 text-red-400 font-bold hover:bg-red-500/20 transition text-sm">تسجيل خروج</button>
   </div>
 </aside>
 
-<!-- ══════════════════════════════════════════
-     MAIN CONTENT
-══════════════════════════════════════════ -->
-<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-
-  <!-- Top bar -->
-  <header class="bg-white border-b border-slate-200 px-5 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-sm">
-    <div class="flex items-center gap-3">
-      <button class="lg:hidden w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600" onclick="openSidebar()">☰</button>
-      <div>
-        <h1 class="font-bold text-slate-800 text-base leading-none" id="page-title">لوحة التحكم</h1>
-        <p class="text-xs text-slate-400 mt-0.5" id="page-subtitle">نظرة عامة على الأداء</p>
-      </div>
+<div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+  <header class="bg-white border-b border-slate-200 px-5 py-3.5 flex items-center justify-between shadow-sm shrink-0">
+    <div>
+      <h1 class="font-bold text-slate-800 text-lg leading-none" id="page-title">لوحة التحكم</h1>
     </div>
     <div class="flex items-center gap-3">
-      <button onclick="checkHealth()" class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-slate-600 font-semibold transition-colors" id="btn-check-api">فحص API</button>
-      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center text-white font-bold text-sm">م</div>
+      <div class="text-left hidden sm:block">
+        <p class="text-sm font-bold text-slate-700" id="top-user-name">ضيف</p>
+        <p class="text-xs text-slate-400" id="top-user-id">---</p>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">👤</div>
     </div>
   </header>
 
-  <!-- Views container -->
-  <main class="flex-1 overflow-y-auto p-5 md:p-6 space-y-6">
+  <main class="flex-1 overflow-y-auto p-5 md:p-8 space-y-6">
 
-    <!-- ════════════════════════════
-         VIEW: OVERVIEW (Dashboard)
-    ════════════════════════════ -->
     <div id="view-overview" class="view-section space-y-6">
-
-      <!-- Stat Cards Row -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Card: Students -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div class="stat-card fade-up">
           <div class="accent-bar bg-brand-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1" id="lbl-total-students">إجمالي الطلاب</p>
-          <p class="text-3xl font-black text-slate-800" id="stat-students">–</p>
-          <p class="text-xs text-slate-400 mt-1" id="lbl-stat-students-sub">في قاعدة البيانات</p>
+          <p class="text-slate-400 text-xs font-semibold mb-1">المقررات المسجلة</p>
+          <p class="text-3xl font-black text-slate-800">2</p>
+          <p class="text-xs text-brand-500 mt-1 font-bold">علوم الحاسب</p>
         </div>
-        <!-- Card: Avg Score -->
-        <div class="stat-card fade-up-1">
+        <div class="stat-card fade-up" style="animation-delay: 0.1s">
           <div class="accent-bar bg-emerald2-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1" id="lbl-avg-score">متوسط الأداء</p>
-          <p class="text-3xl font-black text-slate-800" id="stat-avg">–</p>
-          <p class="text-xs text-slate-400 mt-1" id="lbl-stat-avg-sub">من 100 درجة</p>
+          <p class="text-slate-400 text-xs font-semibold mb-1">نسبة الإنجاز</p>
+          <p class="text-3xl font-black text-slate-800">75%</p>
+          <p class="text-xs text-emerald-500 mt-1 font-bold">معدل جيد جداً</p>
         </div>
-        <!-- Card: High Risk -->
-        <div class="stat-card fade-up-2">
-          <div class="accent-bar bg-red-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1" id="lbl-high-risk">خطر مرتفع</p>
-          <p class="text-3xl font-black text-red-500" id="stat-high">–</p>
-          <p class="text-xs text-slate-400 mt-1" id="lbl-stat-high-sub">يحتاجون تدخلاً فورياً</p>
-        </div>
-        <!-- Card: Courses -->
-        <div class="stat-card fade-up-3">
+        <div class="stat-card fade-up" style="animation-delay: 0.2s">
           <div class="accent-bar bg-gold-500"></div>
-          <p class="text-slate-400 text-xs font-semibold mb-1" id="lbl-courses-count">المقررات</p>
-          <p class="text-3xl font-black text-slate-800" id="stat-courses">–</p>
-          <p class="text-xs text-slate-400 mt-1" id="lbl-stat-courses-sub">مقرر مرجعي</p>
+          <p class="text-slate-400 text-xs font-semibold mb-1">المهارات المكتسبة</p>
+          <p class="text-3xl font-black text-slate-800">8</p>
+          <p class="text-xs text-slate-400 mt-1">جاهزية لسوق العمل</p>
         </div>
       </div>
-
-      <!-- Charts Row -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-
-        <!-- Bar Chart: Scores -->
-        <div class="glass-card p-5 lg:col-span-2 fade-up-1">
-          <div class="flex items-center justify-between mb-4">
-            <p class="section-title" id="lbl-chart-scores">توزيع الدرجات</p>
-            <span class="text-xs bg-brand-500/10 text-brand-500 px-2 py-1 rounded-lg font-semibold" id="lbl-chart-live">محدّث</span>
-          </div>
-          <div class="chart-wrap" style="height:220px">
-            <canvas id="scoresChart"></canvas>
-          </div>
-        </div>
-
-        <!-- Doughnut: Risk -->
-        <div class="glass-card p-5 fade-up-2">
-          <p class="section-title mb-4" id="lbl-chart-risk">توزيع المخاطر</p>
-          <div class="chart-wrap" style="height:180px">
-            <canvas id="riskChart"></canvas>
-          </div>
-          <div class="flex justify-around mt-4 text-xs text-center">
-            <div><span class="block w-3 h-3 rounded-full bg-emerald-500 mx-auto mb-1"></span><span class="text-slate-500" id="lbl-risk-low">منخفض</span></div>
-            <div><span class="block w-3 h-3 rounded-full bg-amber-500 mx-auto mb-1"></span><span class="text-slate-500" id="lbl-risk-med">متوسط</span></div>
-            <div><span class="block w-3 h-3 rounded-full bg-red-500 mx-auto mb-1"></span><span class="text-slate-500" id="lbl-risk-high">مرتفع</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="glass-card p-5 fade-up-3">
-        <p class="section-title mb-4" id="lbl-quick-actions">إجراءات سريعة</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button onclick="showView('analysis')" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-brand-500/8 hover:bg-brand-500/15 transition-colors text-center group">
-            <span class="text-2xl">🧠</span>
-            <span class="text-sm font-semibold text-slate-700 group-hover:text-brand-600" id="lbl-qa-analysis">تحليل طالب</span>
-          </button>
-          <button onclick="showView('courses')" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gold-500/8 hover:bg-gold-500/15 transition-colors text-center group">
-            <span class="text-2xl">📚</span>
-            <span class="text-sm font-semibold text-slate-700 group-hover:text-gold-600" id="lbl-qa-courses">المقررات</span>
-          </button>
-          <button onclick="showView('record')" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-emerald-500/8 hover:bg-emerald-500/15 transition-colors text-center group faculty-only hidden">
-            <span class="text-2xl">✏️</span>
-            <span class="text-sm font-semibold text-slate-700 group-hover:text-emerald-600" id="lbl-qa-record">رصد نتيجة</span>
-          </button>
-          <button onclick="showView('all-students')" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-purple-500/8 hover:bg-purple-500/15 transition-colors text-center group faculty-only hidden">
-            <span class="text-2xl">👥</span>
-            <span class="text-sm font-semibold text-slate-700 group-hover:text-purple-600" id="lbl-qa-all">جميع الطلاب</span>
-          </button>
-          <button onclick="checkHealth()" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-500/8 hover:bg-slate-500/15 transition-colors text-center group">
-            <span class="text-2xl">⚡</span>
-            <span class="text-sm font-semibold text-slate-700" id="lbl-qa-health">حالة الخادم</span>
-          </button>
-          <button onclick="loadAllStudents(true)" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-red-500/8 hover:bg-red-500/15 transition-colors text-center group faculty-only hidden">
-            <span class="text-2xl">🔄</span>
-            <span class="text-sm font-semibold text-slate-700" id="lbl-qa-refresh">تحديث البيانات</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════
-         VIEW: ANALYSIS (Student)
-    ════════════════════════════ -->
-    <div id="view-analysis" class="view-section hidden space-y-5">
-
-      <!-- Input Card -->
-      <div class="glass-card p-5 fade-up">
-        <p class="section-title mb-4" id="lbl-analysis-title">التحليل الذكي للطالب</p>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="flex-1">
-            <label class="block text-xs text-slate-500 font-semibold mb-1.5" id="lbl-student-id-label">رقم هوية الطالب</label>
-            <input id="student-id-input" type="number" class="field" placeholder="مثال: 1001" min="1" />
-          </div>
-          <div class="flex items-end">
-            <button onclick="fetchStudentAnalysis()" class="btn-primary w-full sm:w-auto" id="btn-analyze">
-              🔍 <span id="lbl-btn-analyze">تحليل</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Result -->
-      <div id="analysis-result" class="hidden space-y-4">
-
-        <!-- Risk Overview -->
-        <div class="glass-card p-6 fade-up">
-          <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <!-- Ring -->
-            <div class="shrink-0 flex flex-col items-center">
-              <div class="risk-ring low" id="risk-ring-el" style="--pct:0">
-                <p class="text-xl font-black" id="risk-score-num">–</p>
-                <p class="text-xs text-slate-500">%</p>
-              </div>
-              <p class="mt-2 text-xs text-slate-500 font-semibold" id="lbl-avg-perf">متوسط الأداء</p>
-            </div>
-            <!-- Info -->
-            <div class="flex-1">
-              <div class="flex flex-wrap items-center gap-3 mb-3">
-                <p class="text-xl font-black text-slate-800" id="result-student-label">–</p>
-                <span class="px-3 py-1 rounded-full text-xs font-bold badge-none" id="risk-badge">–</span>
-              </div>
-              <p class="text-slate-600 text-sm leading-relaxed" id="result-recommendation">–</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Skills breakdown -->
+      
+      <div class="glass-card p-6 fade-up" style="animation-delay: 0.3s">
+        <p class="section-title mb-4">المقررات المرجعية الحالية (API)</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="glass-card p-5 fade-up-1">
-            <p class="font-bold text-slate-700 mb-3 flex items-center gap-2">
-              <span class="text-base">✅</span> <span id="lbl-skills-mastered">المهارات المُتقنة</span>
-            </p>
-            <div id="skills-mastered-list" class="space-y-2"></div>
+          <div class="border border-slate-200 p-4 rounded-xl bg-slate-50">
+            <h3 class="font-bold text-navy-800 text-lg">Computer Networking (CS301)</h3>
+            <p class="text-sm text-slate-500 mb-2">الفصل الثالث: Network Layer, IPv4/IPv6, Routing</p>
+            <div class="flex gap-2"><span class="px-2 py-1 bg-brand-500/10 text-brand-600 text-xs rounded font-bold">معتمد لـ مسار</span></div>
           </div>
-          <div class="glass-card p-5 fade-up-2">
-            <p class="font-bold text-slate-700 mb-3 flex items-center gap-2">
-              <span class="text-base">⚠️</span> <span id="lbl-weak-areas">مجالات التحسين</span>
-            </p>
-            <div id="weak-areas-list" class="space-y-2"></div>
+          <div class="border border-slate-200 p-4 rounded-xl bg-slate-50">
+            <h3 class="font-bold text-navy-800 text-lg">Operations Research (CS302)</h3>
+            <p class="text-sm text-slate-500 mb-2">الفصل الثالث: Linear Programming & Duality</p>
+            <div class="flex gap-2"><span class="px-2 py-1 bg-brand-500/10 text-brand-600 text-xs rounded font-bold">معتمد لـ مسار</span></div>
           </div>
         </div>
-
-        <!-- Per-course breakdown -->
-        <div class="glass-card p-5 fade-up-3">
-          <p class="section-title mb-4" id="lbl-course-results">نتائج المقررات</p>
-          <div id="course-results-list" class="space-y-3"></div>
-        </div>
-      </div>
-
-      <!-- No data state -->
-      <div id="analysis-empty" class="glass-card p-12 text-center fade-up hidden">
-        <p class="text-5xl mb-4">🎓</p>
-        <p class="text-slate-500 font-semibold" id="lbl-no-data-analysis">لا توجد بيانات لهذا الطالب بعد</p>
-        <p class="text-slate-400 text-sm mt-1" id="lbl-no-data-sub">قم بإدخال رقم الطالب وسيتم تحليله تلقائياً</p>
-      </div>
-
-      <!-- Loading -->
-      <div id="analysis-loading" class="hidden glass-card p-10">
-        <div class="spinner"></div>
-        <p class="text-center text-slate-400 text-sm mt-4" id="lbl-loading">جارٍ التحليل…</p>
       </div>
     </div>
 
-    <!-- ════════════════════════════
-         VIEW: COURSES
-    ════════════════════════════ -->
-    <div id="view-courses" class="view-section hidden space-y-5">
-      <div class="flex items-center justify-between">
-        <p class="section-title" id="lbl-courses-title">المقررات المرجعية</p>
-        <button onclick="loadCourses()" class="btn-secondary text-sm" id="btn-reload-courses">🔄 <span id="lbl-reload">تحديث</span></button>
+    <div id="view-scenarios" class="view-section hidden space-y-5">
+      <div class="glass-card p-6 fade-up">
+        <h2 class="section-title mb-2">اختبار المهارات العملية (محاكاة)</h2>
+        <p class="text-sm text-slate-500 mb-6">هذه المواقف تم توليدها برمجياً (API) من مقرراتك المرجعية لاختبار فهمك العميق بدلاً من الحفظ.</p>
+
+        <div class="space-y-6">
+          <div class="bg-white border-2 border-brand-500/20 p-5 rounded-xl shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">CS301 - شبكات</div>
+            <h3 class="font-bold text-navy-900 text-lg mt-2 mb-2">الموقف الأول: شبكات مختلطة</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+              أنت مهندس شبكات في شركة تمتلك راوترات تعمل بنظام IPv4، ولكن تم تكليفك بنقل بيانات جديدة تعتمد على بروتوكول IPv6 بين فرعين للشركة. كيف ستتصرف لتمرير هذه البيانات دون ترقية الراوترات القديمة فوراً؟
+            </p>
+            <div class="space-y-2">
+              <button class="w-full text-right p-3 border rounded-lg hover:bg-brand-50 hover:border-brand-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة خاطئة! مسح ה-Checksum لا يحل مشكلة التوافق.')">أ) أقوم بمسح Checksum الخاص بـ IPv6 لتقليل العبء.</button>
+              <button class="w-full text-right p-3 border rounded-lg hover:bg-brand-50 hover:border-brand-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة صحيحة! (Tunneling) هي التقنية المذكورة في منهجك لنقل حزم IPv6 كـ Payload داخل IPv4.')">ب) أستخدم تقنية Tunneling لتغليف حزم IPv6 داخل IPv4.</button>
+              <button class="w-full text-right p-3 border rounded-lg hover:bg-brand-50 hover:border-brand-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة خاطئة!')">ج) أعتمد على بروتوكول ICMPv6 فقط.</button>
+            </div>
+          </div>
+
+          <div class="bg-white border-2 border-gold-500/20 p-5 rounded-xl shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-gold-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">CS302 - بحوث عمليات</div>
+            <h3 class="font-bold text-navy-900 text-lg mt-2 mb-2">الموقف الثاني: تحسين التكلفة</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+              لديك نموذج رياضي (Primal) يهدف إلى "تعظيم الأرباح" (Maximization) ولكنه يحتوي على قيود كثيرة ومعقدة. طلب منك المدير إيجاد تكلفة الموارد بدلاً من الأرباح باستخدام نظرية (Duality). ماذا ستفعل؟
+            </p>
+            <div class="space-y-2">
+              <button class="w-full text-right p-3 border rounded-lg hover:bg-gold-50 hover:border-gold-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة صحيحة! في منهجك: نموذج Max يتحول إلى Min، والقيود تعكس اتجاهها.')">أ) أحول الدالة إلى (Minimization) وأعكس اتجاه المتباينات (Constraints).</button>
+              <button class="w-full text-right p-3 border rounded-lg hover:bg-gold-50 hover:border-gold-300 transition text-sm font-semibold text-slate-700" onclick="alert('إجابة خاطئة! المتغيرات لا تحذف بل تتحول.')">ب) أحذف المتغيرات السالبة من المعادلة.</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-      <div id="courses-loading" class="glass-card p-10"><div class="spinner"></div></div>
     </div>
 
-    <!-- ════════════════════════════
-         VIEW: RECORD RESULT
-    ════════════════════════════ -->
-    <div id="view-record" class="view-section hidden">
-      <div class="max-w-xl">
-        <div class="glass-card p-6 fade-up">
-          <p class="section-title mb-5" id="lbl-record-title">رصد نتيجة طالب</p>
-          <div class="space-y-4">
+    <div id="view-add-course" class="view-section hidden space-y-5">
+      <div class="glass-card p-6 fade-up max-w-2xl">
+        <h2 class="section-title mb-2">بناء مقرر API ذكي</h2>
+        <p class="text-sm text-slate-500 mb-6">قم برفع محتوى المقرر (PDF, Word) وسيقوم النظام بتحليله بالذكاء الاصطناعي وبناء مسارات وأسئلة تفاعلية للطلاب.</p>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">اسم المقرر</label>
+            <input type="text" class="field" placeholder="مثال: هندسة البرمجيات" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5" id="lbl-rec-sid">رقم الطالب</label>
-              <input id="rec-student-id" type="number" class="field" placeholder="1001" />
+              <label class="block text-xs font-bold text-slate-600 mb-1">رمز المقرر</label>
+              <input type="text" class="field" placeholder="SWE301" />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5" id="lbl-rec-course">رمز المقرر</label>
-              <select id="rec-course-code" class="field bg-white">
-                <option value="CS301">CS301 – Computer Networking</option>
-                <option value="CS302">CS302 – Mathematical Optimization</option>
+              <label class="block text-xs font-bold text-slate-600 mb-1">تخصص المقرر</label>
+              <select class="field">
+                <option>علوم الحاسب</option>
+                <option>نظم المعلومات</option>
+                <option>عام</option>
               </select>
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5" id="lbl-rec-score">الدرجة (من 100)</label>
-              <input id="rec-score" type="number" min="0" max="100" class="field" placeholder="85" />
-              <div class="mt-2">
-                <div class="progress-track">
-                  <div class="progress-fill bg-brand-500" id="score-bar" style="width:0%"></div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5" id="lbl-rec-skills">المهارات المُتقنة</label>
-              <input id="rec-skills" class="field" placeholder="IPv4, Routing, Subnetting" />
-              <p class="text-xs text-slate-400 mt-1" id="lbl-rec-skills-hint">افصل بفاصلة بين كل مهارة</p>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-500 mb-1.5" id="lbl-rec-weak">مجالات التحسين</label>
-              <input id="rec-weak" class="field" placeholder="IPv6, QoS" />
-            </div>
-            <div class="flex gap-3 pt-2">
-              <button onclick="recordResult()" class="btn-primary flex-1" id="btn-record-submit">
-                💾 <span id="lbl-btn-record">رصد النتيجة</span>
-              </button>
-              <button onclick="clearRecordForm()" class="btn-secondary" id="btn-record-clear">
-                <span id="lbl-btn-clear">مسح</span>
-              </button>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">المادة العلمية (للتدريب الذكي)</label>
+            <div class="border-2 border-dashed border-brand-300 rounded-xl p-8 text-center bg-brand-50 cursor-pointer hover:bg-brand-100 transition">
+              <span class="text-3xl mb-2 block">📄</span>
+              <p class="text-sm font-bold text-brand-600">اضغط هنا لرفع المنهج المعتمد</p>
+              <p class="text-xs text-brand-400 mt-1">يدعم PDF, PPTX</p>
             </div>
           </div>
+          <button class="btn-primary w-full py-3 text-lg mt-4" onclick="alert('تم رفع المقرر للـ API بنجاح! يتم الآن استخراج المهارات والمواقف.')">بناء مسار المقرر 🚀</button>
         </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════
-         VIEW: ALL STUDENTS
-    ════════════════════════════ -->
-    <div id="view-all-students" class="view-section hidden space-y-5">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <p class="section-title" id="lbl-all-students-title">تقارير جميع الطلاب</p>
-        <div class="flex gap-2">
-          <button onclick="loadAllStudents()" class="btn-secondary text-sm" id="btn-load-all">🔄 <span id="lbl-load-all">تحميل</span></button>
-        </div>
-      </div>
-
-      <!-- Summary bar -->
-      <div id="all-students-summary" class="glass-card p-4 hidden">
-        <div class="flex flex-wrap gap-4 text-sm text-center">
-          <div class="flex-1 min-w-24">
-            <p class="text-2xl font-black text-slate-800" id="sum-total">0</p>
-            <p class="text-slate-400 text-xs" id="lbl-sum-total">إجمالي</p>
-          </div>
-          <div class="flex-1 min-w-24">
-            <p class="text-2xl font-black text-emerald-500" id="sum-low">0</p>
-            <p class="text-slate-400 text-xs" id="lbl-sum-low">منخفض</p>
-          </div>
-          <div class="flex-1 min-w-24">
-            <p class="text-2xl font-black text-amber-500" id="sum-med">0</p>
-            <p class="text-slate-400 text-xs" id="lbl-sum-med">متوسط</p>
-          </div>
-          <div class="flex-1 min-w-24">
-            <p class="text-2xl font-black text-red-500" id="sum-high">0</p>
-            <p class="text-slate-400 text-xs" id="lbl-sum-high">مرتفع</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filter -->
-      <div class="flex gap-2 flex-wrap" id="risk-filters">
-        <button onclick="filterStudents('all')" class="tab-btn active" data-filter="all" id="filter-all">الكل</button>
-        <button onclick="filterStudents('Low')" class="tab-btn" data-filter="Low" id="filter-low">🟢 <span id="lbl-filter-low">منخفض</span></button>
-        <button onclick="filterStudents('Medium')" class="tab-btn" data-filter="Medium" id="filter-med">🟡 <span id="lbl-filter-med">متوسط</span></button>
-        <button onclick="filterStudents('High')" class="tab-btn" data-filter="High" id="filter-high">🔴 <span id="lbl-filter-high">مرتفع</span></button>
-      </div>
-
-      <div id="all-students-list" class="space-y-2"></div>
-      <div id="all-students-loading" class="glass-card p-10 hidden"><div class="spinner"></div></div>
-      <div id="all-students-empty" class="glass-card p-10 text-center hidden">
-        <p class="text-4xl mb-3">👥</p>
-        <p class="text-slate-500" id="lbl-no-students">لا توجد بيانات طلاب بعد</p>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- ─── Toast Notification ─── -->
-<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-semibold opacity-0 pointer-events-none flex items-center gap-2" style="min-width:220px">
-  <span id="toast-icon">✅</span>
-  <span id="toast-msg"></span>
+<div id="chatbot-widget">
+  <div id="chatbot-window">
+    <div class="bg-brand-600 text-white p-3 flex justify-between items-center font-bold">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🤖</span>
+        <span class="text-sm">بوت مسار التعليمي</span>
+      </div>
+      <button onclick="toggleChat()" class="text-white hover:text-slate-200">✖</button>
+    </div>
+    
+    <div id="chatbot-messages">
+      <div class="msg-bot">مرحباً! أنا المساعد الذكي. كيف يمكنني مساعدتك في المنهج أو في تصفح المنصة؟</div>
+    </div>
+
+    <div class="p-3 border-t border-slate-200 bg-white flex gap-2">
+      <input type="text" id="chat-input" class="flex-1 bg-slate-100 border-none rounded-lg px-3 text-sm outline-none focus:ring-2 ring-brand-400" placeholder="اسأل عن أي مفهوم..." onkeypress="if(event.key === 'Enter') sendChat()" />
+      <button onclick="sendChat()" class="bg-brand-500 text-white w-10 h-10 rounded-lg flex items-center justify-center hover:bg-brand-600 transition">➤</button>
+    </div>
+  </div>
+  
+  <button id="chatbot-toggle" onclick="toggleChat()" class="w-14 h-14 bg-gradient-to-br from-brand-500 to-brand-700 rounded-full text-white text-2xl shadow-xl flex items-center justify-center hover:scale-105 transition transform">
+    💬
+  </button>
 </div>
 
-<!-- ════════════════════════════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════════════════════════════ -->
 <script>
-// ─── State ───────────────────────────────────────────────
-let currentRole = 'student';  // 'student' | 'faculty'
-let currentLang = 'ar';
-let allStudentsData = [];
-let scoresChartInst = null;
-let riskChartInst   = null;
+  let currentUser = {
+    name: '',
+    id: '',
+    role: 'student', // 'student' or 'faculty'
+    spec: 'cs'
+  };
 
-// ─── i18n strings ────────────────────────────────────────
-const i18n = {
-  ar: {
-    'lbl-role-title': 'الدور الحالي',
-    'lbl-student': 'طالب',
-    'lbl-faculty': 'أستاذ',
-    'lbl-nav-overview': 'لوحة التحكم',
-    'lbl-nav-analysis': 'التحليل الذكي',
-    'lbl-nav-courses': 'المقررات',
-    'lbl-nav-record': 'رصد النتائج',
-    'lbl-nav-all': 'جميع الطلاب',
-    'lbl-api-url': 'عنوان API',
-    'lbl-total-students': 'إجمالي الطلاب',
-    'lbl-stat-students-sub': 'في قاعدة البيانات',
-    'lbl-avg-score': 'متوسط الأداء',
-    'lbl-stat-avg-sub': 'من 100 درجة',
-    'lbl-high-risk': 'خطر مرتفع',
-    'lbl-stat-high-sub': 'يحتاجون تدخلاً فورياً',
-    'lbl-courses-count': 'المقررات',
-    'lbl-stat-courses-sub': 'مقرر مرجعي',
-    'lbl-chart-scores': 'توزيع الدرجات',
-    'lbl-chart-live': 'محدّث',
-    'lbl-chart-risk': 'توزيع المخاطر',
-    'lbl-risk-low': 'منخفض',
-    'lbl-risk-med': 'متوسط',
-    'lbl-risk-high': 'مرتفع',
-    'lbl-quick-actions': 'إجراءات سريعة',
-    'lbl-qa-analysis': 'تحليل طالب',
-    'lbl-qa-courses': 'المقررات',
-    'lbl-qa-record': 'رصد نتيجة',
-    'lbl-qa-all': 'جميع الطلاب',
-    'lbl-qa-health': 'حالة الخادم',
-    'lbl-qa-refresh': 'تحديث البيانات',
-    'lbl-analysis-title': 'التحليل الذكي للطالب',
-    'lbl-student-id-label': 'رقم هوية الطالب',
-    'lbl-btn-analyze': 'تحليل',
-    'lbl-avg-perf': 'متوسط الأداء',
-    'lbl-skills-mastered': 'المهارات المُتقنة',
-    'lbl-weak-areas': 'مجالات التحسين',
-    'lbl-course-results': 'نتائج المقررات',
-    'lbl-no-data-analysis': 'لا توجد بيانات لهذا الطالب بعد',
-    'lbl-no-data-sub': 'قم بإدخال رقم الطالب وسيتم تحليله تلقائياً',
-    'lbl-loading': 'جارٍ التحليل…',
-    'lbl-courses-title': 'المقررات المرجعية',
-    'lbl-reload': 'تحديث',
-    'btn-reload-courses': '🔄 تحديث',
-    'lbl-record-title': 'رصد نتيجة طالب',
-    'lbl-rec-sid': 'رقم الطالب',
-    'lbl-rec-course': 'رمز المقرر',
-    'lbl-rec-score': 'الدرجة (من 100)',
-    'lbl-rec-skills': 'المهارات المُتقنة',
-    'lbl-rec-skills-hint': 'افصل بفاصلة بين كل مهارة',
-    'lbl-rec-weak': 'مجالات التحسين',
-    'lbl-btn-record': 'رصد النتيجة',
-    'lbl-btn-clear': 'مسح',
-    'lbl-all-students-title': 'تقارير جميع الطلاب',
-    'lbl-load-all': 'تحميل',
-    'lbl-sum-total': 'إجمالي',
-    'lbl-sum-low': 'منخفض',
-    'lbl-sum-med': 'متوسط',
-    'lbl-sum-high': 'مرتفع',
-    'lbl-filter-low': 'منخفض',
-    'lbl-filter-med': 'متوسط',
-    'lbl-filter-high': 'مرتفع',
-    'lbl-no-students': 'لا توجد بيانات طلاب بعد',
-    'btn-check-api': 'فحص API',
-    'status-text': 'غير متصل',
-    'page-titles': { overview: 'لوحة التحكم', analysis: 'التحليل الذكي', courses: 'المقررات', record: 'رصد النتائج', 'all-students': 'جميع الطلاب' },
-    'page-subtitles': { overview: 'نظرة عامة على الأداء', analysis: 'تحليل بيانات الطلاب', courses: 'المقررات الدراسية المرجعية', record: 'إضافة نتائج جديدة', 'all-students': 'مراقبة أداء المجموعة' },
-    'risk-labels': { Low: 'مخاطر منخفضة', Medium: 'مخاطر متوسطة', High: 'مخاطر مرتفعة', 'No data': 'لا بيانات' },
-    'student-label': (id) => `الطالب #${id}`,
-    'score-label': 'الدرجة',
-    'no-skills': 'لا توجد مهارات مسجلة',
-    'no-results': 'لا توجد نتائج',
-    'server-online': 'الخادم متصل',
-    'server-offline': 'الخادم غير متصل',
-    'recorded-ok': 'تم رصد النتيجة بنجاح',
-    'error-generic': 'حدث خطأ في الاتصال',
-    'error-no-id': 'أدخل رقم الطالب أولاً',
-    'error-incomplete': 'يرجى تعبئة جميع الحقول',
-    'filter-all': 'الكل',
-  },
-  en: {
-    'lbl-role-title': 'Current Role',
-    'lbl-student': 'Student',
-    'lbl-faculty': 'Faculty',
-    'lbl-nav-overview': 'Dashboard',
-    'lbl-nav-analysis': 'AI Analysis',
-    'lbl-nav-courses': 'Courses',
-    'lbl-nav-record': 'Record Result',
-    'lbl-nav-all': 'All Students',
-    'lbl-api-url': 'API Base URL',
-    'lbl-total-students': 'Total Students',
-    'lbl-stat-students-sub': 'in database',
-    'lbl-avg-score': 'Avg Performance',
-    'lbl-stat-avg-sub': 'out of 100',
-    'lbl-high-risk': 'High Risk',
-    'lbl-stat-high-sub': 'need immediate support',
-    'lbl-courses-count': 'Courses',
-    'lbl-stat-courses-sub': 'reference course',
-    'lbl-chart-scores': 'Score Distribution',
-    'lbl-chart-live': 'Live',
-    'lbl-chart-risk': 'Risk Distribution',
-    'lbl-risk-low': 'Low',
-    'lbl-risk-med': 'Medium',
-    'lbl-risk-high': 'High',
-    'lbl-quick-actions': 'Quick Actions',
-    'lbl-qa-analysis': 'Analyze Student',
-    'lbl-qa-courses': 'Courses',
-    'lbl-qa-record': 'Record Result',
-    'lbl-qa-all': 'All Students',
-    'lbl-qa-health': 'Server Status',
-    'lbl-qa-refresh': 'Refresh Data',
-    'lbl-analysis-title': 'Student AI Analysis',
-    'lbl-student-id-label': 'Student ID',
-    'lbl-btn-analyze': 'Analyze',
-    'lbl-avg-perf': 'Average Score',
-    'lbl-skills-mastered': 'Skills Mastered',
-    'lbl-weak-areas': 'Improvement Areas',
-    'lbl-course-results': 'Course Results',
-    'lbl-no-data-analysis': 'No data for this student yet',
-    'lbl-no-data-sub': 'Enter a student ID to begin analysis',
-    'lbl-loading': 'Analyzing…',
-    'lbl-courses-title': 'Reference Courses',
-    'lbl-reload': 'Refresh',
-    'btn-reload-courses': '🔄 Refresh',
-    'lbl-record-title': 'Record Student Result',
-    'lbl-rec-sid': 'Student ID',
-    'lbl-rec-course': 'Course Code',
-    'lbl-rec-score': 'Score (out of 100)',
-    'lbl-rec-skills': 'Skills Mastered',
-    'lbl-rec-skills-hint': 'Separate each skill with a comma',
-    'lbl-rec-weak': 'Weak Areas',
-    'lbl-btn-record': 'Record Result',
-    'lbl-btn-clear': 'Clear',
-    'lbl-all-students-title': 'All Students Reports',
-    'lbl-load-all': 'Load',
-    'lbl-sum-total': 'Total',
-    'lbl-sum-low': 'Low',
-    'lbl-sum-med': 'Medium',
-    'lbl-sum-high': 'High',
-    'lbl-filter-low': 'Low',
-    'lbl-filter-med': 'Medium',
-    'lbl-filter-high': 'High',
-    'lbl-no-students': 'No student data yet',
-    'btn-check-api': 'Check API',
-    'status-text': 'Disconnected',
-    'page-titles': { overview: 'Dashboard', analysis: 'AI Analysis', courses: 'Courses', record: 'Record Result', 'all-students': 'All Students' },
-    'page-subtitles': { overview: 'Performance Overview', analysis: 'Student data analysis', courses: 'Reference course catalog', record: 'Add new results', 'all-students': 'Group performance monitoring' },
-    'risk-labels': { Low: 'Low Risk', Medium: 'Medium Risk', High: 'High Risk', 'No data': 'No Data' },
-    'student-label': (id) => `Student #${id}`,
-    'score-label': 'Score',
-    'no-skills': 'No skills recorded',
-    'no-results': 'No results',
-    'server-online': 'Server online',
-    'server-offline': 'Server offline',
-    'recorded-ok': 'Result recorded successfully',
-    'error-generic': 'Connection error',
-    'error-no-id': 'Please enter a student ID',
-    'error-incomplete': 'Please fill all fields',
-    'filter-all': 'All',
-  }
-};
-const t = (key) => i18n[currentLang][key] ?? i18n['ar'][key] ?? key;
-
-// ─── Helpers ─────────────────────────────────────────────
-const apiBase = () => (document.getElementById('api-base').value || 'http://localhost:8000').replace(/\/$/, '');
-
-function el(id) { return document.getElementById(id); }
-
-function showToast(msg, type = 'success') {
-  const toast = el('toast');
-  const colors = { success: '#10b981', error: '#ef4444', info: '#1e7de0', warn: '#f59e0b' };
-  const icons  = { success: '✅', error: '❌', info: 'ℹ️', warn: '⚠️' };
-  toast.style.background = colors[type];
-  el('toast-icon').textContent = icons[type];
-  el('toast-msg').textContent = msg;
-  toast.style.opacity = '1';
-  toast.style.transform = 'translateX(-50%) translateY(0)';
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateX(-50%) translateY(16px)';
-  }, 3000);
-}
-
-async function apiFetch(path, opts = {}) {
-  try {
-    const res = await fetch(apiBase() + path, {
-      headers: { 'Content-Type': 'application/json' },
-      ...opts
-    });
-    if (!res.ok) {
-      let detail = res.statusText;
-      try { const j = await res.json(); detail = j.detail || detail; } catch {}
-      throw new Error(detail);
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
-}
-
-// ─── Language ────────────────────────────────────────────
-function setLang(lang) {
-  currentLang = lang;
-  el('lang-ar').className = lang === 'ar'
-    ? 'flex-1 text-xs py-1.5 rounded-lg bg-gold-500 text-navy-900 font-bold'
-    : 'flex-1 text-xs py-1.5 rounded-lg bg-white/10 text-slate-400 font-bold';
-  el('lang-en').className = lang === 'en'
-    ? 'flex-1 text-xs py-1.5 rounded-lg bg-gold-500 text-navy-900 font-bold'
-    : 'flex-1 text-xs py-1.5 rounded-lg bg-white/10 text-slate-400 font-bold';
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  applyI18n();
-}
-
-function applyI18n() {
-  const strings = i18n[currentLang];
-  for (const [key, val] of Object.entries(strings)) {
-    if (typeof val === 'string') {
-      const node = el(key);
-      if (node) node.textContent = val;
-    }
-  }
-  el('filter-all').textContent = t('filter-all');
-  updatePageTitle(currentView);
-}
-
-// ─── Role ─────────────────────────────────────────────────
-function setRole(role) {
-  currentRole = role;
-  el('role-student').className = role === 'student'
-    ? 'flex-1 py-2 rounded-lg text-sm font-bold transition-all bg-brand-500 text-white shadow'
-    : 'flex-1 py-2 rounded-lg text-sm font-bold transition-all bg-white/10 text-slate-300';
-  el('role-faculty').className = role === 'faculty'
-    ? 'flex-1 py-2 rounded-lg text-sm font-bold transition-all bg-brand-500 text-white shadow'
-    : 'flex-1 py-2 rounded-lg text-sm font-bold transition-all bg-white/10 text-slate-300';
-
-  document.querySelectorAll('.faculty-only').forEach(el => {
-    el.classList.toggle('hidden', role !== 'faculty');
-  });
-}
-
-// ─── Sidebar mobile ───────────────────────────────────────
-function openSidebar() {
-  el('sidebar').classList.add('open');
-  el('mob-overlay').classList.add('open');
-}
-function closeSidebar() {
-  el('sidebar').classList.remove('open');
-  el('mob-overlay').classList.remove('open');
-}
-
-// ─── Views ────────────────────────────────────────────────
-let currentView = 'overview';
-function showView(view) {
-  document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  el('view-' + view)?.classList.remove('hidden');
-  el('nav-' + (view === 'all-students' ? 'all' : view))?.classList.add('active');
-  currentView = view;
-  updatePageTitle(view);
-  closeSidebar();
-  if (view === 'courses') loadCourses();
-  if (view === 'all-students') loadAllStudents();
-  if (view === 'overview') loadOverview();
-}
-
-function updatePageTitle(view) {
-  const titles = t('page-titles');
-  const subs   = t('page-subtitles');
-  if (titles && typeof titles === 'object') {
-    el('page-title').textContent    = titles[view] ?? view;
-    el('page-subtitle').textContent = subs[view] ?? '';
-  }
-}
-
-// ─── Health Check ────────────────────────────────────────
-async function checkHealth() {
-  try {
-    const data = await apiFetch('/healthz');
-    el('status-dot').className = 'w-2 h-2 rounded-full bg-emerald-500 inline-block';
-    el('status-text').textContent = t('server-online');
-    showToast(t('server-online'), 'success');
-  } catch {
-    el('status-dot').className = 'w-2 h-2 rounded-full bg-red-500 inline-block';
-    el('status-text').textContent = t('server-offline');
-    showToast(t('server-offline'), 'warn');
-  }
-}
-
-// ─── Overview ─────────────────────────────────────────────
-async function loadOverview() {
-  try {
-    const [courses] = await Promise.allSettled([apiFetch('/courses/reference')]);
-    const coursesData = courses.status === 'fulfilled' ? courses.value : [];
-    el('stat-courses').textContent = Array.isArray(coursesData) ? coursesData.length : '?';
-  } catch {}
-
-  // Faculty: load all-students for stats
-  if (currentRole === 'faculty') {
-    try {
-      const data = await apiFetch('/faculty/all-students-analysis?user_role=faculty');
-      const reports = Array.isArray(data.reports) ? data.reports : [];
-      const validReports = reports.filter(r => r.risk_level && r.risk_level !== 'No data');
-      el('stat-students').textContent = data.total_students_analyzed ?? 0;
-      const scores = validReports.map(r => r.average_score).filter(s => typeof s === 'number');
-      el('stat-avg').textContent = scores.length ? (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1) + '%' : '–';
-      el('stat-high').textContent = reports.filter(r => r.risk_level === 'High').length;
-      updateOverviewCharts(reports);
-    } catch { updateOverviewCharts([]); }
-  } else {
-    el('stat-students').textContent = '–';
-    el('stat-avg').textContent = '–';
-    el('stat-high').textContent = '–';
-    updateOverviewCharts([]);
-  }
-}
-
-function updateOverviewCharts(reports) {
-  const scores = reports.filter(r => typeof r.average_score === 'number').map(r => r.average_score);
-  const labels = scores.map((_, i) => `#${reports[i].student_id}`);
-
-  const scoreCtx = el('scoresChart').getContext('2d');
-  if (scoresChartInst) scoresChartInst.destroy();
-  scoresChartInst = new Chart(scoreCtx, {
-    type: 'bar',
-    data: {
-      labels: labels.length ? labels : ['–'],
-      datasets: [{
-        label: t('score-label'),
-        data: scores.length ? scores : [0],
-        backgroundColor: scores.map(s => s >= 75 ? 'rgba(16,185,129,.75)' : s >= 60 ? 'rgba(245,158,11,.75)' : 'rgba(239,68,68,.75)'),
-        borderRadius: 8, borderSkipped: false
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, max: 100, grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { family: 'Tajawal' } } }, x: { grid: { display: false }, ticks: { font: { family: 'Tajawal' } } } }
-    }
-  });
-
-  const low    = reports.filter(r => r.risk_level === 'Low').length;
-  const medium = reports.filter(r => r.risk_level === 'Medium').length;
-  const high   = reports.filter(r => r.risk_level === 'High').length;
-
-  const riskCtx = el('riskChart').getContext('2d');
-  if (riskChartInst) riskChartInst.destroy();
-  riskChartInst = new Chart(riskCtx, {
-    type: 'doughnut',
-    data: {
-      labels: [t('lbl-risk-low'), t('lbl-risk-med'), t('lbl-risk-high')],
-      datasets: [{ data: [low || 0, medium || 0, high || 0], backgroundColor: ['#10b981','#f59e0b','#ef4444'], borderWidth: 0, hoverOffset: 6 }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false, cutout: '68%',
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed}` } } }
-    }
-  });
-}
-
-// ─── Student Analysis ────────────────────────────────────
-async function fetchStudentAnalysis() {
-  const id = parseInt(el('student-id-input').value, 10);
-  if (!id || id < 1) { showToast(t('error-no-id'), 'warn'); return; }
-
-  el('analysis-result').classList.add('hidden');
-  el('analysis-empty').classList.add('hidden');
-  el('analysis-loading').classList.remove('hidden');
-
-  try {
-    const data = await apiFetch(`/student/my-analysis/${id}`);
-    el('analysis-loading').classList.add('hidden');
-    renderStudentAnalysis(data, id);
-  } catch (e) {
-    el('analysis-loading').classList.add('hidden');
-    showToast(e.message || t('error-generic'), 'error');
-  }
-}
-
-function renderStudentAnalysis(data, id) {
-  const status = data.status;
-  if (status === 'No data' || !data.average_score) {
-    el('analysis-empty').classList.remove('hidden');
-    return;
+  function toggleRegFields() {
+    const role = document.getElementById('reg-role').value;
+    document.getElementById('lbl-reg-id').innerText = role === 'student' ? 'الرقم الجامعي' : 'الرقم الوظيفي';
   }
 
-  const avg  = typeof data.average_score === 'number' ? data.average_score : 0;
-  const risk = data.risk_level ?? 'No data';
-  const riskLabels = t('risk-labels');
-  const badgeClass = { Low: 'badge-low', Medium: 'badge-medium', High: 'badge-high', 'No data': 'badge-none' };
+  function login() {
+    const name = document.getElementById('reg-name').value;
+    const id = document.getElementById('reg-id').value;
+    
+    if(!name || !id) return alert('الرجاء إدخال الاسم والرقم');
 
-  el('result-student-label').textContent = t('student-label')(id);
-  el('risk-score-num').textContent = avg.toFixed(1);
-  el('result-recommendation').textContent = data.ai_recommendation ?? '–';
-  el('risk-badge').textContent = riskLabels[risk] ?? risk;
-  el('risk-badge').className = `px-3 py-1 rounded-full text-xs font-bold ${badgeClass[risk] ?? 'badge-none'}`;
+    currentUser.role = document.getElementById('reg-role').value;
+    currentUser.spec = document.getElementById('reg-spec').value;
+    currentUser.name = name;
+    currentUser.id = id;
 
-  // Ring
-  const ring = el('risk-ring-el');
-  ring.style.setProperty('--pct', avg);
-  ring.className = `risk-ring ${risk.toLowerCase() === 'high' ? 'high' : risk.toLowerCase() === 'medium' ? 'medium' : 'low'}`;
+    // Update UI Elements
+    document.getElementById('top-user-name').innerText = name;
+    document.getElementById('top-user-id').innerText = '#' + id;
+    
+    let roleText = currentUser.role === 'student' ? 'طالب' : 'عضو هيئة تدريس';
+    let specText = document.getElementById('reg-spec').options[document.getElementById('reg-spec').selectedIndex].text;
+    document.getElementById('user-display-role').innerText = roleText + ' - ' + specText;
 
-  // Skills
-  const mastered = Array.isArray(data.skills_mastered) ? data.skills_mastered : [];
-  const weak     = Array.isArray(data.weak_areas)      ? data.weak_areas      : [];
-  el('skills-mastered-list').innerHTML = mastered.length
-    ? mastered.map(s => `<div class="flex items-center gap-2 text-sm text-slate-700"><span class="text-emerald-500">✓</span>${s}</div>`).join('')
-    : `<p class="text-sm text-slate-400">${t('no-skills')}</p>`;
-  el('weak-areas-list').innerHTML = weak.length
-    ? weak.map(s => `<div class="flex items-center gap-2 text-sm text-slate-700"><span class="text-amber-500">△</span>${s}</div>`).join('')
-    : `<p class="text-sm text-slate-400">${t('no-skills')}</p>`;
+    // Apply Permissions
+    document.querySelectorAll('.student-only').forEach(el => el.classList.toggle('hidden', currentUser.role !== 'student'));
+    document.querySelectorAll('.faculty-only').forEach(el => el.classList.toggle('hidden', currentUser.role !== 'faculty'));
 
-  // Course results
-  const courseResults = Array.isArray(data.course_results) ? data.course_results : [];
-  el('course-results-list').innerHTML = courseResults.length
-    ? courseResults.map(cr => buildCourseResultCard(cr)).join('')
-    : `<p class="text-sm text-slate-400">${t('no-results')}</p>`;
-
-  el('analysis-result').classList.remove('hidden');
-}
-
-function buildCourseResultCard(cr) {
-  const pct = Math.min(Math.max(cr.score ?? 0, 0), 100);
-  const color = pct >= 75 ? '#10b981' : pct >= 60 ? '#f59e0b' : '#ef4444';
-  return `
-    <div class="student-row">
-      <div class="flex items-center justify-between mb-2">
-        <span class="font-bold text-slate-700 text-sm">${cr.course_code ?? '–'}</span>
-        <span class="font-black text-base" style="color:${color}">${pct}%</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" style="width:${pct}%;background:${color}"></div>
-      </div>
-    </div>`;
-}
-
-// ─── Courses ──────────────────────────────────────────────
-async function loadCourses() {
-  el('courses-grid').innerHTML = '';
-  el('courses-loading').classList.remove('hidden');
-  try {
-    const data = await apiFetch('/courses/reference');
-    el('courses-loading').classList.add('hidden');
-    const courses = Array.isArray(data) ? data : [];
-    if (!courses.length) {
-      el('courses-grid').innerHTML = `<p class="col-span-3 text-slate-400 text-sm text-center py-10">${t('no-results')}</p>`;
-      return;
-    }
-    el('courses-grid').innerHTML = courses.map(c => buildCourseCard(c)).join('');
-  } catch (e) {
-    el('courses-loading').classList.add('hidden');
-    showToast(e.message || t('error-generic'), 'error');
+    // Hide Overlay
+    document.getElementById('auth-overlay').style.display = 'none';
+    showView('overview');
   }
-}
 
-function buildCourseCard(c) {
-  const icons = ['🖥️','📐','🔬','💡','🌐','📊'];
-  const icon = icons[Math.abs((c.id ?? 0) % icons.length)] ?? '📚';
-  return `
-    <div class="glass-card p-5 fade-up hover:shadow-lg transition-shadow">
-      <div class="flex items-start gap-3 mb-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center text-xl shrink-0">${icon}</div>
-        <div class="min-w-0">
-          <p class="font-black text-slate-800 leading-snug">${c.title ?? '–'}</p>
-          <span class="inline-block bg-brand-500/10 text-brand-500 text-xs font-bold px-2 py-0.5 rounded-md mt-1">${c.code ?? '–'}</span>
-        </div>
-      </div>
-      <p class="text-sm text-slate-500 leading-relaxed">${c.description ?? '–'}</p>
-    </div>`;
-}
+  function showView(viewId) {
+    document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    
+    let target = document.getElementById('view-' + viewId);
+    if(target) target.classList.remove('hidden');
+    
+    let nav = document.getElementById('nav-' + viewId);
+    if(nav) nav.classList.add('active');
 
-// ─── Record Result ────────────────────────────────────────
-async function recordResult() {
-  const sid   = parseInt(el('rec-student-id').value, 10);
-  const code  = el('rec-course-code').value;
-  const score = parseFloat(el('rec-score').value);
-  const skills = el('rec-skills').value.split(',').map(s => s.trim()).filter(Boolean);
-  const weak   = el('rec-weak').value.split(',').map(s => s.trim()).filter(Boolean);
-
-  if (!sid || isNaN(score) || !code) { showToast(t('error-incomplete'), 'warn'); return; }
-
-  const payload = { student_id: sid, course_code: code, score, skills_mastered: skills, weak_areas: weak };
-  try {
-    await apiFetch('/faculty/record-result?user_role=faculty', { method: 'POST', body: JSON.stringify(payload) });
-    showToast(t('recorded-ok'), 'success');
-    clearRecordForm();
-    loadOverview();
-  } catch (e) {
-    showToast(e.message || t('error-generic'), 'error');
+    const titles = {
+      'overview': 'لوحة التحكم',
+      'scenarios': 'اختبار المهارات',
+      'analysis': 'تحليلي الذكي',
+      'add-course': 'بناء مقرر API',
+      'record': 'رصد النتائج',
+      'all-students': 'متابعة أداء الطلاب'
+    };
+    document.getElementById('page-title').innerText = titles[viewId] || '';
   }
-}
 
-function clearRecordForm() {
-  ['rec-student-id','rec-score','rec-skills','rec-weak'].forEach(id => { el(id).value = ''; });
-  el('score-bar').style.width = '0%';
-}
-
-// Live score bar
-el('rec-score').addEventListener('input', function() {
-  const v = Math.min(Math.max(parseFloat(this.value) || 0, 0), 100);
-  const bar = el('score-bar');
-  bar.style.width = v + '%';
-  bar.style.background = v >= 75 ? '#10b981' : v >= 60 ? '#f59e0b' : '#ef4444';
-});
-
-// ─── All Students ─────────────────────────────────────────
-async function loadAllStudents(silent = false) {
-  if (!silent) {
-    el('all-students-list').innerHTML = '';
-    el('all-students-loading').classList.remove('hidden');
-    el('all-students-empty').classList.add('hidden');
-    el('all-students-summary').classList.add('hidden');
+  function logout() {
+    document.getElementById('auth-overlay').style.display = 'flex';
+    document.getElementById('reg-name').value = '';
+    document.getElementById('reg-id').value = '';
   }
-  try {
-    const data = await apiFetch('/faculty/all-students-analysis?user_role=faculty');
-    el('all-students-loading').classList.add('hidden');
-    allStudentsData = Array.isArray(data.reports) ? data.reports : [];
-    if (!allStudentsData.length) {
-      el('all-students-empty').classList.remove('hidden');
-      return;
-    }
-    renderStudentsSummary(allStudentsData);
-    renderStudentsList(allStudentsData, 'all');
-    el('all-students-summary').classList.remove('hidden');
-    if (silent) showToast(t('recorded-ok'), 'info');
-  } catch (e) {
-    el('all-students-loading').classList.add('hidden');
-    showToast(e.message || t('error-generic'), 'error');
+
+  // ChatBot Logic
+  let chatOpen = false;
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatbot-window').style.display = chatOpen ? 'flex' : 'none';
+    document.getElementById('chatbot-toggle').style.transform = chatOpen ? 'scale(0)' : 'scale(1)';
   }
-}
 
-function renderStudentsSummary(reports) {
-  el('sum-total').textContent = reports.length;
-  el('sum-low').textContent   = reports.filter(r => r.risk_level === 'Low').length;
-  el('sum-med').textContent   = reports.filter(r => r.risk_level === 'Medium').length;
-  el('sum-high').textContent  = reports.filter(r => r.risk_level === 'High').length;
-}
+  function sendChat() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if(!text) return;
 
-function renderStudentsList(reports, filter = 'all') {
-  const filtered = filter === 'all' ? reports : reports.filter(r => r.risk_level === filter);
-  if (!filtered.length) {
-    el('all-students-list').innerHTML = `<p class="text-center text-slate-400 py-8">${t('no-results')}</p>`;
-    return;
+    const chatBox = document.getElementById('chatbot-messages');
+    
+    // User Message
+    chatBox.innerHTML += `<div class="msg-user">${text}</div>`;
+    input.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Bot Thinking/Response Delay
+    setTimeout(() => {
+      let reply = "عذراً، لم أفهم سؤالك. يمكنك سؤالي عن مقرراتك أو عن كيفية التصفح.";
+      
+      // AI Logic based on PDFs
+      if(text.includes('تسجيل') || text.includes('خانة')) {
+        reply = "للتسجيل، استخدمت الشاشة الأولى لاختيار دورك كطالب أو عضو هيئة تدريس. يمكنك التنقل بين الخانات عبر القائمة الجانبية يميناً.";
+      } 
+      else if(text.toLowerCase().includes('ipv6') || text.includes('tunneling') || text.includes('شبكات')) {
+        reply = "من خلال مقرر CS301 المرجعي: تقنية (Tunneling) تستخدم لنقل حزم IPv6 كبيانات (Payload) داخل حزم IPv4 لتسهيل الانتقال بين الأنظمة.";
+      }
+      else if(text.toLowerCase().includes('dual') || text.includes('primal') || text.includes('بحوث')) {
+        reply = "بناءً على مقرر CS302 (Duality): إذا كان النموذج الأساسي (Primal) هو تعظيم (Max)، فإن النموذج المقابل (Dual) يكون تقليل (Min) مع عكس إشارات القيود (Constraints).";
+      }
+
+      chatBox.innerHTML += `<div class="msg-bot">${reply}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 800);
   }
-  el('all-students-list').innerHTML = filtered.map(r => buildStudentRow(r)).join('');
-}
-
-function buildStudentRow(r) {
-  const avg  = typeof r.average_score === 'number' ? r.average_score.toFixed(1) : '–';
-  const risk = r.risk_level ?? 'No data';
-  const badgeClass = { Low: 'badge-low', Medium: 'badge-medium', High: 'badge-high', 'No data': 'badge-none' };
-  const riskLabels = t('risk-labels');
-  const pct  = typeof r.average_score === 'number' ? Math.min(Math.max(r.average_score, 0), 100) : 0;
-  const color = pct >= 75 ? '#10b981' : pct >= 60 ? '#f59e0b' : '#ef4444';
-
-  return `
-    <div class="student-row">
-      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-        <div class="w-9 h-9 rounded-full shrink-0 flex items-center justify-center text-white font-bold text-sm" style="background:${color}">
-          ${r.student_id ?? '?'}
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex flex-wrap items-center gap-2 mb-1">
-            <p class="font-bold text-slate-700 text-sm">${t('student-label')(r.student_id ?? '?')}</p>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${badgeClass[risk] ?? 'badge-none'}">${riskLabels[risk] ?? risk}</span>
-          </div>
-          <div class="progress-track" style="height:5px">
-            <div class="progress-fill" style="width:${pct}%;background:${color}"></div>
-          </div>
-        </div>
-        <div class="text-left sm:text-right shrink-0">
-          <p class="text-lg font-black" style="color:${color}">${avg}%</p>
-          <p class="text-xs text-slate-400">${t('lbl-avg-score')}</p>
-        </div>
-      </div>
-      ${r.ai_recommendation ? `<p class="text-xs text-slate-500 mt-2 pt-2 border-t border-slate-100 leading-relaxed">${r.ai_recommendation}</p>` : ''}
-    </div>`;
-}
-
-function filterStudents(filter) {
-  document.querySelectorAll('[data-filter]').forEach(b => {
-    b.classList.toggle('active', b.dataset.filter === filter);
-  });
-  renderStudentsList(allStudentsData, filter);
-}
-
-// ─── Init ────────────────────────────────────────────────
-setRole('student');
-setLang('ar');
-showView('overview');
-checkHealth();
 </script>
+
 </body>
 </html>
