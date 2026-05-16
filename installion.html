@@ -1,0 +1,259 @@
+
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حقيبة مشروع مسار الشاملة - Eduthon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Azeret+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #1e293b;
+            --accent: #10b981;
+            --bg-light: #f8fafc;
+            --text-dark: #334155;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #f1f5f9;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+        }
+
+        header h1 { font-size: 50px; margin-bottom: 15px; font-weight: 800; }
+        header p { font-size: 24px; opacity: 0.9; }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100%;
+            background-color: var(--primary);
+        }
+
+        h2.section-title {
+            color: var(--primary);
+            font-size: 36px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .text-block { font-size: 20px; margin-bottom: 25px; text-align: justify; line-height: 1.8; }
+        
+        .code-snippet {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 30px;
+            border-radius: 12px;
+            font-family: 'Azeret Mono', monospace;
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 16px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .code-snippet span.comment { color: #94a3b8; }
+        .code-snippet span.command { color: #a7f3d0; font-weight: bold; }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .team-member i { font-size: 40px; color: var(--primary); margin-bottom: 15px; }
+        .team-member h4 { font-size: 22px; color: var(--primary); margin-bottom: 5px; }
+        .team-member p { font-size: 16px; color: #64748b; }
+
+        .highlight-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مشروع مـســـــــــار</h1>
+        <p>الذكاء الاصطناعي لتعلم مخصص وجيل جاهز للمستقبل | هاكاثون Eduthon</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- نبذة مختصرة -->
+        <div class="section">
+            <h2 class="section-title"><i class="fa-solid fa-file-lines"></i> نبذة عن المشروع (150 كلمة)</h2>
+            <div class="text-block">
+                تُعد منصة <strong>"مسار"</strong> مشروعاً ابتكارياً يهدف إلى إحداث نقلة نوعية في قطاع التعليم العالي من خلال دمج تقنيات الذكاء الاصطناعي لتوفير تجربة تعلم مخصصة لكل طالب. تنطلق فكرة المشروع من معالجة الفجوة المهارية بين المخرجات الأكاديمية ومتطلبات سوق العمل المتغيرة، خاصة في منطقة عسير. تعتمد المنصة على تحليل دقيق لمستوى الطالب لتحديد نقاط القوة والضعف، ومن ثم بناء مسارات تعليمية ذكية تتكيف مع وتيرة تعلمه وأهدافه المهنية. كما تضم المنصة مساعداً ذكياً يعمل بنماذج اللغة الكبيرة (LLMs) للإجابة الفورية على الاستفسارات، ونظام تحفيز يعزز التفاعل. يسعى "مسار" إلى تحقيق الاستدامة من خلال تقليل الهدر التعليمي والتنبؤ الاستباقي بحالات التعثر الدراسي، مما يدعم جودة المخرجات الوطنية بما يتوافق مع رؤية المملكة 2030. يستهدف المشروع الطلاب، الجامعات، وجهات التوظيف، لخلق منظومة تعليمية متكاملة تربط المنهج الأكاديمي بالمهارات التطبيقية والمحاكاة الواقعية لبيئات العمل.
+            </div>
+        </div>
+
+        <!-- الوصف الجذاب -->
+        <div class="section">
+            <h2 class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> وصف جذاب ومُلهم (200 كلمة)</h2>
+            <div class="text-block">
+                <strong>مسار: حيث يرسم الذكاء الاصطناعي مستقبل طموحك الأصيل!</strong>
+                <br><br>
+                هل تساءلت يوماً لماذا يسلك الجميع الطريق الأكاديمي ذاته بينما يمتلك كل طالب شغفاً وبصمة فريدة؟ في عصر الثورة الرقمية المتسارعة، لم يعد التعليم التقليدي الموحد كافياً لصناعة التميز؛ ومن هنا ولدت منصة "مسار" لتكون المنارة التقنية الذكية التي تعيد تشكيل خارطة التعليم العالي، وتجسر بفخر تلك الفجوة المهارية بين مقاعد الدراسة ومتطلبات سوق العمل المتجدد.
+                <br><br>
+                "مسار" ليست مجرد منصة رقمية عابرة، بل هي منظومة ريادية مدعومة بأحدث خوارزميات الذكاء الاصطناعي، تعمل كشريك استراتيجي يحلل قدراتك بدقة، ويرسم لك رحلة تعلم مخصصة بالكامل تتكيف مع إيقاعك وأهدافك المهنية. وبفضل تقنيات المساعد الذكي التفاعلي المتاح على مدار الساعة، ومحاكاة الواقع الافتراضي، تنقلك المنصة إلى قلب بيئات العمل الحقيقية لتتخذ قراراتك المصيرية بثقة واقتدار.
+                <br><br>
+                نحن نتجاوز التلقين لنصنع التمكين؛ فمن خلال التنبؤ الاستباقي بالتعثر الدراسي ونظام التحفيز القائم على التحديات، نضمن استدامة رحلتك المعرفية وتقليل الهدر التعليمي. إن "مسار" هي البوابة الذهبية المتوافقة مع رؤية المملكة 2030 لتأهيل جيل وطني مبتكر ومستعد لقيادة المستقبل وإضاءة تطلعات الوطن بروح ريادية ملهمة.
+            </div>
+        </div>
+
+        <!-- الوصف التفصيلي -->
+        <div class="section">
+            <h2 class="section-title"><i class="fa-solid fa-align-right"></i> وصف المشروع الشامل (1000 حرف)</h2>
+            <div class="text-block">
+                منصة "مسار" هي مشروع تقني ريادي يهدف لإحداث ثورة في منظومة التعليم العالي عبر توظيف تقنيات الذكاء الاصطناعي لتوفير تجربة تعلم مخصصة بالكامل لكل طالب. تنطلق الفكرة من معالجة تحدٍ وطني جوهري يكمن في الفجوة المهارية بين المخرجات الأكاديمية ومتطلبات سوق العمل المتسارعة، مستهدفةً رفع جودة التعليم في منطقة عسير والمملكة تماشياً مع رؤية 2030.
+                <br><br>
+                تتميز المنصة بتقديم تحليل دقيق واستباقي لمستويات الطلاب، مما يتيح التنبؤ بالتعثر الدراسي قبل حدوثه ويقلل الهدر التعليمي والمادي للمؤسسات. توفر "مسار" مسارات تعليمية مرنة تتكيف مع إيقاع وأهداف كل متعلم، مدعومة بمساعد ذكي تفاعلي يعتمد على نماذج اللغة الكبيرة (LLMs) للإجابة الفورية، بجانب تقنيات المحاكاة الواقعية لبيئات العمل لتمكين الطلاب من اتخاذ قراراتهم المهنية بثقة.
+                <br><br>
+                يستهدف المشروع خلق منظومة متكاملة تربط الطلاب والجامعات بقطاع الأعمال، مما يضمن بناء مجتمع معرفي مستدام يرفد الوطن بكفاءات جاهزة ومؤهلة لقيادة المستقبل. "مسار" ليست مجرد منصة، بل هي البوصلة الذكية نحو تميزك الأكاديمي والمهني الصُنع لأجلك وبك.
+            </div>
+        </div>
+
+        <!-- دليل تثبيت Git و GitHub -->
+        <div class="section">
+            <h2 class="section-title"><i class="fa-brands fa-github"></i> دليل التثبيت ورفع المشروع (Installation & GitHub)</h2>
+            
+            <div class="highlight-box">
+                <i class="fa-solid fa-circle-info"></i> هذا القسم مخصص للمطورين ولجان التحكيم لتشغيل منصة "مسار" على أجهزتهم المحلية.
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 30px;">1. تثبيت Git على جهازك (إذا لم يكن مثبتاً):</h3>
+            <div class="text-block">
+                <ul>
+                    <li><strong>نظام Windows:</strong> قم بتحميله من <a href="https://gitforwindows.org/" target="_blank">Git for Windows</a> واتبع خطوات التثبيت الافتراضية.</li>
+                    <li><strong>نظام Mac:</strong> افتح موجه الأوامر (Terminal) واكتب: <code>brew install git</code></li>
+                    <li><strong>نظام Linux:</strong> افتح موجه الأوامر واكتب: <code>sudo apt-get install git</code></li>
+                </ul>
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 30px;">2. إعداد الحساب وربطه (Configuration):</h3>
+            <div class="code-snippet">
+<span class="comment"># قم بإعداد اسمك وبريدك الإلكتروني المرتبط بحساب GitHub</span><br>
+<span class="command">git config</span> --global user.name "Your Name"<br>
+<span class="command">git config</span> --global user.email "your.email@example.com"
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 30px;">3. استنساخ المشروع وتشغيله محلياً (Clone & Run):</h3>
+            <div class="code-snippet">
+<span class="comment"># 1. استنساخ المستودع (Clone the repository)</span><br>
+<span class="command">git clone</span> https://github.com/your-username/masaar.git<br><br>
+
+<span class="comment"># 2. الانتقال إلى مجلد المشروع</span><br>
+<span class="command">cd</span> masaar<br><br>
+
+<span class="comment"># 3. تثبيت الاعتماديات الخاصة بالواجهة الأمامية (Frontend)</span><br>
+<span class="command">npm</span> install<br><br>
+
+<span class="comment"># 4. تثبيت الاعتماديات الخاصة بالذكاء الاصطناعي/الخلفية (Backend)</span><br>
+<span class="command">pip</span> install -r requirements.txt<br><br>
+
+<span class="comment"># 5. تشغيل المشروع</span><br>
+<span class="command">npm</span> start
+            </div>
+        </div>
+
+        <!-- فريق العمل -->
+        <div class="section">
+            <h2 class="section-title"><i class="fa-solid fa-users"></i> فريق العمل - أبطال مسار</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                    <h4>سفيان الخلفي</h4>
+                    <p>علوم حاسب</p>
+                </div>
+                <div class="team-member">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <h4>لينا القحطاني</h4>
+                    <p>تطوير تطبيقات</p>
+                </div>
+                <div class="team-member">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <h4>خالد الألمعاني</h4>
+                    <p>إدارة سياحية</p>
+                </div>
+                <div class="team-member">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <h4>وجد القحطاني</h4>
+                    <p>نظم معلومات</p>
+                </div>
+                <div class="team-member">
+                    <i class="fa-solid fa-monument"></i>
+                    <h4>وعد القحطاني</h4>
+                    <p>تاريخ وآثار</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 مشروع مسار - هاكاثون Eduthon - جامعة الملك خالد <br>
+        <small>تم إنشاء هذه الوثيقة الشاملة لتسهيل استعراض المشروع للمحكمين والمطورين.</small>
+    </footer>
+
+</body>
+</html>
